@@ -1,0 +1,28 @@
+
+const String logowithtextSvg = "assets/logowithtext.svg";
+const String darklogowithtextSvg = "assets/darklogowithtext.svg";
+
+
+const String tWelcomeImage = "assets/images/welcome_screen/WelcomeImage.png";
+
+//- bottom navbar
+const String thomeoutSvg = "assets/images/Icons/trade-outline-icon.svg";
+const String thomefillSvg = "assets/images/Icons/trade-icon.svg";
+const String tmarketoutSvg = "assets/images/Icons/market-outline-icon.svg";
+const String tmarketfillSvg = "assets/images/Icons/market-icon.svg";
+const String tpooloutSvg = "assets/images/Icons/pool-outline-icon.svg";
+const String tpoolfillSvg = "assets/images/Icons/pool-icon.svg";
+const String ttradeoutSvg = "assets/images/Icons/tradeout.svg";
+const String ttradefillSvg = "assets/images/Icons/tradefill.svg";
+const String twalletoutSvg = "assets/images/Icons/wallet-outline-icon.svg";
+const String twalletfillSvg = "assets/images/Icons/wallet-icon.svg";
+
+//- Common Icons
+const String depositSvg = "assets/images/Icons/Deposit-icon.svg";
+const String withdrawSvg = "assets/images/Icons/withdraw-icon.svg";
+const String transferSvg = "assets/images/Icons/transfer-icon.svg";
+const String historySvg = "assets/images/Icons/clock-icon.svg";
+const String transactionModeSvg = "assets/images/Icons/transaction-mode.svg";
+const String raffralsSvg = "assets/images/Icons/Icon akar-person-add.svg";
+const String contactSupportSvg = "assets/images/Icons/Icon awesome-headset.svg";
+const String wCommunitySvg = "assets/images/Icons/whatsappcommunity.svg";
