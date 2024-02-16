@@ -13,6 +13,22 @@ class ProfileVerifyScreen extends StatefulWidget {
 
 class _ProfileVerifyScreenState extends State<ProfileVerifyScreen> {
   int _currentStep = 0;
+  void goToNextStep() {
+    setState(() {
+      if (_currentStep < 2) {
+        _currentStep++;
+      }
+    });
+  }
+
+  void goToPreviousStep() {
+    setState(() {
+      if (_currentStep > 0) {
+        _currentStep--;
+      }
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -48,46 +64,130 @@ class _ProfileVerifyScreenState extends State<ProfileVerifyScreen> {
                 new SvgPicture.asset(darklogowithtextSvg, width: 120),
               ],
             ),
-            SizedBox(height: MediaQuery.of(context).size.height * 0.08),
-            Stepper(
-              steps: [
-                Step(
-                  isActive: _currentStep == 0,
-                  title: Text('step 1'), 
-                  content: Text('Information step 1'),),
-                Step(
-                  isActive: _currentStep == 1,
-                  title: Text('step 1'), 
-                  content: Text('Information step 1'),),
-                Step(
-                  isActive: _currentStep == 2,
-                  title: Text('step 1'), 
-                  content: Text('Information step 1'),),
+            SizedBox(height: MediaQuery.of(context).size.height * 0.04),
+            Column(
+              children: [
+                StepWidget(
+                  isActive: _currentStep >= 0,
+                  title: 'Step 1',
+                  content: _currentStep == 0
+                      ? Column(
+                          children: [
+                            Text('Content for Step 1'),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              children: [
+                                ElevatedButton(
+                                  onPressed: goToNextStep,
+                                  child: Text('Next'),
+                                ),
+                              ],
+                            ),
+                          ],
+                        )
+                      : Container(
+                          child: Icon(Icons.check, color: Colors.green),
+                        ),
+                ),
+                StepWidget(
+                  isActive: _currentStep >= 1,
+                  title: 'Step 2',
+                  content: _currentStep == 1
+                      ? Column(
+                          children: [
+                            Text('Content for Step 2'),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              children: [
+                                ElevatedButton(
+                                  onPressed: goToPreviousStep,
+                                  child: Text('Previous'),
+                                ),
+                                ElevatedButton(
+                                  onPressed: goToNextStep,
+                                  child: Text('Next'),
+                                ),
+                              ],
+                            ),
+                          ],
+                        )
+                      : Container(
+                          child: Icon(Icons.check, color: Colors.green),
+                        ),
+                ),
+                StepWidget(
+                  isActive: _currentStep >= 2,
+                  title: 'Step 3',
+                  content: _currentStep == 2
+                      ? Column(
+                          children: [
+                            Text('Content for Step 3'),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              children: [
+                                ElevatedButton(
+                                  onPressed: goToPreviousStep,
+                                  child: Text('Previous'),
+                                ),
+                                ElevatedButton(
+                                  onPressed: () {
+                                    // Handle submission logic here
+                                  },
+                                  child: Text('Submit'),
+                                ),
+                              ],
+                            ),
+                          ],
+                        )
+                      : Container(
+                          child: Icon(Icons.check, color: Colors.green),
+                        ),
+                ),
               ],
-              onStepTapped: (int newIndex) {
-                setState(() {
-                  _currentStep = newIndex;
-                });
-              },
-              currentStep: _currentStep,
-              onStepContinue: () {
-                if (_currentStep != 2) {
-                  setState(() {
-                    _currentStep += 1;
-                  });
-                }
-              },
-              onStepCancel: () {
-                if (_currentStep != 0) {
-                  setState(() {
-                    _currentStep -= 1;
-                  });
-                }
-              },
             )
           ],
         ),
       ),
+    );
+  }
+}
+
+class StepWidget extends StatelessWidget {
+  final bool isActive;
+  final String title;
+  final Widget content;
+
+  StepWidget(
+      {required this.isActive, required this.title, required this.content});
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Row(
+          children: [
+            Container(
+              width: 24,
+              height: 24,
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                color: isActive ? Colors.green : Colors.grey,
+              ),
+              child: Center(
+                child: Text(
+                  isActive ? '✓' : '',
+                  style: TextStyle(color: Colors.white),
+                ),
+              ),
+            ),
+            SizedBox(width: 12),
+            Text(title),
+          ],
+        ),
+        SizedBox(height: 8),
+        content,
+      ],
     );
   }
 }

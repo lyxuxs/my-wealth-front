@@ -153,7 +153,7 @@ class _MarketsScreenState extends State<MarketsScreen>
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Text(data.currencyPair),
+                            Text(data.currencyPair, style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),),
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                               children: [

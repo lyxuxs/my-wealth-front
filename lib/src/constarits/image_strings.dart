@@ -26,3 +26,6 @@ const String transactionModeSvg = "assets/images/Icons/transaction-mode.svg";
 const String raffralsSvg = "assets/images/Icons/Icon akar-person-add.svg";
 const String contactSupportSvg = "assets/images/Icons/Icon awesome-headset.svg";
 const String wCommunitySvg = "assets/images/Icons/whatsappcommunity.svg";
+const String infoSvg = "assets/images/Icons/Icon ionic-md-information-circle.svg";
+const String icon_exchangeSvg = "assets/images/Icons/icon-exchange.svg";
+const String copyIconSvg = "assets/images/Icons/copy-icon.svg";
