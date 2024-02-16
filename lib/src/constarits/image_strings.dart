@@ -29,3 +29,4 @@ const String wCommunitySvg = "assets/images/Icons/whatsappcommunity.svg";
 const String infoSvg = "assets/images/Icons/Icon ionic-md-information-circle.svg";
 const String icon_exchangeSvg = "assets/images/Icons/icon-exchange.svg";
 const String copyIconSvg = "assets/images/Icons/copy-icon.svg";
+const String qrscannerIconSvg = "assets/images/Icons/scan-qr-code-4.svg";

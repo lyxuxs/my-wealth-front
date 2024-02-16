@@ -20,11 +20,15 @@ class _DepositScreenState extends State<DepositScreen> {
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: true,
+        iconTheme: IconThemeData(
+          color: Colors.white, //change your color here
+        ),
         backgroundColor: tLightBlueColor,
         elevation: 0,
         title: const Text(
           "Deposit USDT",
           style: TextStyle(
+            color: Colors.white,
               fontWeight: FontWeight.bold, fontSize: 15),
         ),
         centerTitle: true,

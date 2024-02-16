@@ -3,6 +3,9 @@ import 'package:my_wealth/src/common_widgets/custom_container_btn.dart';
 import 'package:my_wealth/src/constarits/colors.dart';
 import 'package:my_wealth/src/constarits/image_strings.dart';
 import 'package:my_wealth/src/features/core/screens/deposit/deposit_screen.dart';
+import 'package:my_wealth/src/features/core/screens/history/historyscreen.dart';
+import 'package:my_wealth/src/features/core/screens/transfer/transfer_screen.dart';
+import 'package:my_wealth/src/features/core/screens/withdraw/withdraw_screen.dart';
 
 class WalletWidget extends StatelessWidget {
   const WalletWidget({
@@ -20,6 +23,7 @@ class WalletWidget extends StatelessWidget {
         child: Column(
           children: [
             Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Column(
@@ -43,21 +47,21 @@ class WalletWidget extends StatelessWidget {
                   ],
                 ),
                 Container(
-                  height: 30.0,
+                  height: 50.0,
                   width: 1,
                   color: Color.fromARGB(255, 181, 181, 181).withOpacity(0.3),
                 ),
-                Container(
-                  decoration: BoxDecoration(
-                      color: tShadoColor,
-                      border: Border.all(color: tGrayColor),
-                      borderRadius: BorderRadius.all(Radius.circular(10))),
-                  child: Padding(
-                    padding: const EdgeInsets.only(
-                        left: 8.0, right: 8.0, top: 4, bottom: 4),
-                    child: Text('wallet'),
-                  ),
-                )
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text('Funding Balance', style: TextStyle(color: Colors.grey, fontWeight: FontWeight.w500),),
+                    Text(
+                      '\$12,761.65',
+                      style:
+                          TextStyle(fontWeight: FontWeight.bold, fontSize: 25),
+                    ),
+                  ],
+                ),
               ],
             ),
             SizedBox(
@@ -80,23 +84,43 @@ class WalletWidget extends StatelessWidget {
                     text: 'Deposit',
                   ),
                 ),
-                CustomContinerBtn(
-                  color: tShadoColor,
-                  svgPath: withdrawSvg,
-                  svgColor: tDarkGrayColor,
-                  text: 'Withdraw',
+                InkWell(
+                  onTap: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => WithdrawScreen()));
+                  },
+                  child: CustomContinerBtn(
+                    color: tShadoColor,
+                    svgPath: withdrawSvg,
+                    svgColor: tDarkGrayColor,
+                    text: 'Withdraw',
+                  ),
                 ),
-                CustomContinerBtn(
-                  color: tShadoColor,
-                  svgPath: transferSvg,
-                  svgColor: tDarkGrayColor,
-                  text: 'Transfer',
+                InkWell(
+                  onTap: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => TransferScreen()));
+                  },
+                  child: CustomContinerBtn(
+                    color: tShadoColor,
+                    svgPath: transferSvg,
+                    svgColor: tDarkGrayColor,
+                    text: 'Transfer',
+                  ),
                 ),
-                CustomContinerBtn(
-                  color: tShadoColor,
-                  svgPath: historySvg,
-                  svgColor: tDarkGrayColor,
-                  text: 'history',
+                InkWell(
+                  onTap: () {
+                  },
+                  child: CustomContinerBtn(
+                    color: tShadoColor,
+                    svgPath: historySvg,
+                    svgColor: tDarkGrayColor,
+                    text: 'history',
+                  ),
                 ),
               ],
             )
