@@ -100,10 +100,14 @@ class transactionDetailsWidget extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 const Text(
-                  "Balance",
+                  "Balance", style: TextStyle(
+                    fontWeight: FontWeight.w600, fontSize: 15
+                  ),
                 ),
                 const Text(
-                  "2024.02.14 22:00:00",
+                  "2024.02.14 22:00:00",style: TextStyle(
+                    fontWeight: FontWeight.w600,
+                  ),
                 ),
               ],
             ),
@@ -114,7 +118,8 @@ class transactionDetailsWidget extends StatelessWidget {
                   "Deposit",
                 ),
                 const Text(
-                  "100 000.00",
+                  "100 000.00", style: TextStyle( color: tLightBlueColor,fontWeight: FontWeight.w600,
+                  ),
                 ),
               ],
             ),
