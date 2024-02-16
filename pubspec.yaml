@@ -39,8 +39,6 @@ dependencies:
   auto_size_text: ^3.0.0
   flutter_svg: ^2.0.5
   url_launcher: ^6.2.4
-  flutter_candlesticks_chart:
-  intl:
 
 dev_dependencies:
   flutter_test:
