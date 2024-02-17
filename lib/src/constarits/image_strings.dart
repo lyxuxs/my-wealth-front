@@ -3,7 +3,7 @@ const String logowithtextSvg = "assets/logowithtext.svg";
 const String darklogowithtextSvg = "assets/darklogowithtext.svg";
 
 
-const String tWelcomeImage = "assets/images/welcome_screen/WelcomeImage.png";
+const String tWelcomeImage = "assets/images/welcome_screen/onboardaImage.png";
 
 //- bottom navbar
 const String thomeoutSvg = "assets/images/Icons/trade-outline-icon.svg";

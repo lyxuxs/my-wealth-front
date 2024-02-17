@@ -14,6 +14,7 @@ class WelcomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: bgColor,
       body: Container(
         child: SingleChildScrollView(
           child: Column(
@@ -30,22 +31,25 @@ class WelcomeScreen extends StatelessWidget {
                     top: 60,
                     left: 30,
                     right: 30,
-                    child: SvgPicture.asset(logowithtextSvg, width: 165.67, height: 38.93,)
+                    child: SvgPicture.asset(darklogowithtextSvg, width: 165.67, height: 38.93,)
                   )
                 ],
               ),
               Padding(
-                padding: const EdgeInsets.all(tDefaultSize),
+                padding: const EdgeInsets.all(20),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
+                    SizedBox(
+                      height: 20,
+                    ),
                     AutoSizeText(
                       tWelcomeTitle,
                       style: TextStyle(
                         fontFamily: 'PlusJakartaSans',
-                        fontWeight: FontWeight.w800,
+                        fontWeight: FontWeight.bold,
                         fontSize: 30,
-                        height: 1.5
+                        height: 1.2
                       ),
                       maxLines: 2,
                       textAlign: TextAlign.center,
@@ -57,7 +61,7 @@ class WelcomeScreen extends StatelessWidget {
                       tWelcomeSubTitle,
                       style: TextStyle(
                         fontFamily: 'PlusJakartaSans',
-                        fontWeight: FontWeight.w600,
+                        fontWeight: FontWeight.w400,
                         fontSize: 15,
                         color: tDarkGrayColor,
                       ),
@@ -81,9 +85,9 @@ class WelcomeScreen extends StatelessWidget {
                                 style: OutlinedButton.styleFrom(
                                   shape: RoundedRectangleBorder(
                                       borderRadius: BorderRadius.circular(9.0)),
-                                  foregroundColor: tSecondoryColor,
+                                  foregroundColor: Colors.black,
                                   side: BorderSide(
-                                      color: tSecondoryColor, width: 2.0),
+                                      color: authBtnBgColor, width: 2.0),
                                   padding: EdgeInsets.symmetric(
                                       vertical: tButtonHeight),
                                 ),
@@ -91,7 +95,7 @@ class WelcomeScreen extends StatelessWidget {
                                   tSignin,
                                   style: TextStyle(
                                     fontFamily: 'PlusJakartaSans',
-                                    fontWeight: FontWeight.w500,
+                                    fontWeight: FontWeight.bold,
                                     fontSize: 15,
                                   ),
                                 ))),
@@ -111,9 +115,9 @@ class WelcomeScreen extends StatelessWidget {
                                   shape: RoundedRectangleBorder(
                                       borderRadius: BorderRadius.circular(9.0)),
                                   foregroundColor: tWhiteColor,
-                                  backgroundColor: tSecondoryColor,
+                                  backgroundColor: authBtnBgColor,
                                   side: BorderSide(
-                                      color: tSecondoryColor, width: 2.0),
+                                      color: authBtnBgColor, width: 2.0),
                                   padding: EdgeInsets.symmetric(
                                       vertical: tButtonHeight),
                                 ),
@@ -121,7 +125,7 @@ class WelcomeScreen extends StatelessWidget {
                                   tSignup,
                                   style: TextStyle(
                                     fontFamily: 'PlusJakartaSans',
-                                    fontWeight: FontWeight.w500,
+                                    fontWeight: FontWeight.bold,
                                     fontSize: 15,
                                   ),
                                 ))),

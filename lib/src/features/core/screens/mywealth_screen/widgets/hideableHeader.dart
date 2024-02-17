@@ -23,7 +23,7 @@ class HideableHeader extends StatelessWidget {
             onTap: () {},
             child: Container(
                 height: 45.0,
-                width: 60.0,
+                padding: EdgeInsets.only(left: 12, right: 12 ),
                 alignment: Alignment.center,
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(5),
@@ -31,7 +31,7 @@ class HideableHeader extends StatelessWidget {
                 ),
                 child: Text(
                   'Intro',
-                  style: TextStyle(color: Colors.white),
+                  style: TextStyle(color: Colors.white, fontWeight: FontWeight.w600),
                 )),
           ),
         ],

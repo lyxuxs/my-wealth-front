@@ -75,6 +75,7 @@ flutter:
     - assets/images/
     - assets/
     - assets/images/Icons/
+    - assets/images/welcome_screen/
     - assets/images/welcome_screen/WelcomeImage.png
   #   - images/a_dot_ham.jpeg
 
