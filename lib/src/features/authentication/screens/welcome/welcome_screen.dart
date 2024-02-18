@@ -31,7 +31,7 @@ class WelcomeScreen extends StatelessWidget {
                     top: 60,
                     left: 30,
                     right: 30,
-                    child: SvgPicture.asset(darklogowithtextSvg, width: 165.67, height: 38.93,)
+                    child: SvgPicture.asset(darklogowithtextSvg, width: 155.67, height: 28.93,)
                   )
                 ],
               ),

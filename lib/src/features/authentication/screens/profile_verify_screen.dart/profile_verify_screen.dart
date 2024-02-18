@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:my_wealth/src/common_widgets/custom_textfield.dart';
 import 'package:my_wealth/src/constarits/colors.dart';
 import 'package:my_wealth/src/constarits/image_strings.dart';
+import 'package:my_wealth/src/constarits/sizes.dart';
 import 'package:my_wealth/src/features/authentication/screens/signup/signup_scren.dart';
 
 class ProfileVerifyScreen extends StatefulWidget {
@@ -12,6 +14,7 @@ class ProfileVerifyScreen extends StatefulWidget {
 }
 
 class _ProfileVerifyScreenState extends State<ProfileVerifyScreen> {
+    final TextEditingController PhoneNumberController = TextEditingController();
   int _currentStep = 0;
   void goToNextStep() {
     setState(() {
@@ -73,20 +76,62 @@ class _ProfileVerifyScreenState extends State<ProfileVerifyScreen> {
                   content: _currentStep == 0
                       ? Column(
                           children: [
-                            Text('Content for Step 1'),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                ElevatedButton(
-                                  onPressed: goToNextStep,
-                                  child: Text('Next'),
+                                const Text(
+                                  "Mobile Number",
+                                  style: TextStyle(
+                                      fontSize: 13,
+                                      fontWeight: FontWeight.w600),
+                                ),
+                                const SizedBox(
+                                  height: 5,
+                                ),
+                                CustomTextField(
+                                  controller: PhoneNumberController,
+                                  hintText: '011xxxxxxxx',
+                                ),
+                                const SizedBox(
+                                  height: 3,
+                                ),
+                                const Text(
+                                  "Please enter your valid mobile number. because we will send you a verification code",
+                                  style: TextStyle(fontSize: 10),
+                                ),
+                              ],
+                            ),
+                            SizedBox(height: 20,),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                SizedBox(
+                                  width: 200,
+                                  child: ElevatedButton(
+                                    onPressed: goToNextStep,
+                                    style: ElevatedButton.styleFrom(
+                                    shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(9.0)),
+                                    foregroundColor: tWhiteColor,
+                                    backgroundColor: authBtnBgColor,
+                                    side: BorderSide(
+                                        color: authBtnBgColor, width: 2.0),
+                                    padding: EdgeInsets.symmetric(
+                                        vertical: 13),
+                                  ),
+                                    child: Text('Next',style: TextStyle(
+                                    fontFamily: 'PlusJakartaSans',
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 15,
+                                  ),),
+                                  ),
                                 ),
                               ],
                             ),
                           ],
                         )
                       : Container(
-                          child: Icon(Icons.check, color: Colors.green),
+                        child: SizedBox(height: 10,),
                         ),
                 ),
                 StepWidget(

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:my_wealth/src/constarits/colors.dart';
 import 'package:my_wealth/src/constarits/image_strings.dart';
+import 'package:my_wealth/src/features/core/screens/invite_friends/invite_friends_screen.dart';
 
 class Rafrral_n_CustomerServiceWidget extends StatelessWidget {
   const Rafrral_n_CustomerServiceWidget({
@@ -20,28 +21,36 @@ class Rafrral_n_CustomerServiceWidget extends StatelessWidget {
             left: 20, right: 20, top: 15, bottom: 15),
         child: Column(
           children: [
-            Row(
-              mainAxisAlignment:
-                  MainAxisAlignment.spaceBetween,
-              children: [
-                Row(
-                  children: [
-                    SvgPicture.asset(
-                      raffralsSvg,
-                      width: 25,
-                    ),
-                    SizedBox(
-                      width: 10,
-                    ),
-                    Text(
-                      'Invite your friends',
-                      style: TextStyle(
-                          color: Colors.black, fontSize: 14),
-                    )
-                  ],
-                ),
-                Icon(Icons.chevron_right_rounded)
-              ],
+            InkWell(
+              onTap: () {
+                Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => InviteFrinedsScreen()));
+              },
+              child: Row(
+                mainAxisAlignment:
+                    MainAxisAlignment.spaceBetween,
+                children: [
+                  Row(
+                    children: [
+                      SvgPicture.asset(
+                        raffralsSvg,
+                        width: 25,
+                      ),
+                      SizedBox(
+                        width: 10,
+                      ),
+                      Text(
+                        'Invite your friends',
+                        style: TextStyle(
+                            color: Colors.black, fontSize: 14),
+                      )
+                    ],
+                  ),
+                  Icon(Icons.chevron_right_rounded)
+                ],
+              ),
             ),
             SizedBox(
               height: 20,
