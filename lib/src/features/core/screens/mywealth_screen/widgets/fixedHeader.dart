@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:my_wealth/src/constarits/colors.dart';
+import 'package:my_wealth/src/data_models/user_data.dart';
 
 class FixedHeader extends StatelessWidget {
   const FixedHeader({
@@ -43,7 +44,7 @@ class FixedHeader extends StatelessWidget {
                     ),
                     child: Center(
                         child: Text(
-                      'JD',
+                      _getInitials(users['19991124']!.Username),
                       style: TextStyle(
                           color: myWealtlightgreenColor,
                           fontWeight: FontWeight.bold,
@@ -55,7 +56,9 @@ class FixedHeader extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text('Jhon',
+                      Text(users['19991124']!.Username.length > 19
+                        ? users['19991124']!.Username.substring(0, 19)
+                        : users['19991124']!.Username,
                           style: TextStyle(
                               fontWeight: FontWeight.bold, fontSize: 18)),
                       Text(
@@ -70,5 +73,17 @@ class FixedHeader extends StatelessWidget {
             ],
           ),
         ));
+  }
+
+  String _getInitials(String name) {
+    List<String> names = name.split(" ");
+    String initials = "";
+    if (names.length > 0) {
+      initials += names[0][0];
+      if (names.length > 1) {
+        initials += names[1][0];
+      }
+    }
+    return initials;
   }
 }

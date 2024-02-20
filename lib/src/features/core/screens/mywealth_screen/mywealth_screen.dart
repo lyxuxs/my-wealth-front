@@ -91,6 +91,10 @@ class MyWealthScreen extends StatelessWidget {
                           ),
                         ),
                       ),
+                      SizedBox(
+                        height: 20,
+                      ),
+                      Center(child: Text('© 2024 MyWealth. All rights reserved. 0.0.1 version',style: TextStyle(color: tDarkGrayColor),))
                     ],
                   ),
                 ),

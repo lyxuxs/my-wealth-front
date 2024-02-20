@@ -2,11 +2,25 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:my_wealth/src/constarits/colors.dart';
 import 'package:my_wealth/src/constarits/image_strings.dart';
+import 'package:my_wealth/src/data_models/user_data.dart';
 
 class HideableHeader extends StatelessWidget {
   const HideableHeader({
     super.key,
   });
+
+  String _getLevelText(int level) {
+  switch (level) {
+    case 1:
+      return 'Level 1';
+    case 2:
+      return 'Level 2';
+    case 3:
+      return 'Level 3';
+    default:
+      return 'intro';
+  }
+}
 
   @override
   Widget build(BuildContext context) {
@@ -27,10 +41,10 @@ class HideableHeader extends StatelessWidget {
                 alignment: Alignment.center,
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(5),
-                  color: myWealtlightgreenColor,
+                  color: users['19991124']?.Verify == true ? myWealtlightgreenColor : Colors.grey,
                 ),
                 child: Text(
-                  'Intro',
+                  users['19991124']!.Level =='0' ? 'Intro' : _getLevelText(int.parse(users['19991124']!.Level)),
                   style: TextStyle(color: Colors.white, fontWeight: FontWeight.w600),
                 )),
           ),

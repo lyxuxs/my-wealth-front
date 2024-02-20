@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:my_wealth/src/constarits/colors.dart';
 import 'package:my_wealth/src/constarits/image_strings.dart';
+import 'package:my_wealth/src/features/core/screens/chart_Screen/chart_screen.dart';
 import 'package:my_wealth/src/features/core/screens/history/historyscreen.dart';
 import 'package:my_wealth/src/features/core/screens/markets/markets_screen.dart';
 import 'package:my_wealth/src/features/core/screens/mywealth_screen/mywealth_screen.dart';
@@ -19,7 +20,7 @@ class _MainPageState extends State<MainPage> {
   int index = 0;
   final screens = [
     MarketsScreen(),
-    const Center(child: Text('chart')),
+    ChartScreen(),
     TradesScreen(),
     HistoryScreen(),
     MyWealthScreen(),
