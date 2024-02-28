@@ -19,9 +19,22 @@ class WelcomeScreen extends StatelessWidget {
         child: SingleChildScrollView(
           child: Column(
             children: [
-              SizedBox(height: MediaQuery.of(context).size.height * 0.3,),  
-              SvgPicture.asset(darklogowithtextSvg, width: 282.67, height: 52.98,),
-              SizedBox(height: MediaQuery.of(context).size.height * 0.2,),
+              Stack(
+                children: [
+                  Image(
+                  image: AssetImage(tWelcomeImage),
+                  height: MediaQuery.of(context).size.height * 0.5,
+                  width: MediaQuery.of(context).size.width,
+                  fit: BoxFit.cover,
+                  ),
+                  Positioned(
+                    bottom: 120,
+                    left: 30,
+                    right: 30,
+                    child: SvgPicture.asset(darklogowithtextSvg, width: 183.16, height: 41.42,)
+                  )
+                ],
+              ),
               Padding(
                 padding: const EdgeInsets.all(20),
                 child: Column(
