@@ -12,20 +12,16 @@ class transactionModeWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: (){
-        Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => TradingModeScreen()));
+      onTap: () {
+        Navigator.push(context,
+            MaterialPageRoute(builder: (context) => TradingModeScreen()));
       },
       child: Container(
         decoration: BoxDecoration(
             border: Border.all(color: tGrayColor),
-            borderRadius:
-                BorderRadius.all(Radius.circular(10))),
+            borderRadius: BorderRadius.all(Radius.circular(10))),
         child: Padding(
-          padding: EdgeInsets.only(
-              left: 20, right: 20, top: 15, bottom: 15),
+          padding: EdgeInsets.only(left: 20, right: 20, top: 15, bottom: 15),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
@@ -40,8 +36,7 @@ class transactionModeWidget extends StatelessWidget {
                   ),
                   Text(
                     'Trading mode',
-                    style: TextStyle(
-                        color: Colors.black, fontSize: 14),
+                    style: TextStyle(color: Colors.black, fontSize: 14),
                   )
                 ],
               ),

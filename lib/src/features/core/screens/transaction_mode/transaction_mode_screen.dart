@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:my_wealth/src/constarits/colors.dart';
 import 'package:my_wealth/src/constarits/image_strings.dart';
+import 'package:my_wealth/src/features/core/screens/transaction_mode/transaction_mode_details/recurring_trading.dart';
 
 class TradingModeScreen extends StatefulWidget {
   const TradingModeScreen({super.key});
@@ -37,17 +38,25 @@ class _TradingModeScreenState extends State<TradingModeScreen> {
         child: SingleChildScrollView(
           child: Column(
             children: [
-              TradingModeWidget(
-                svgPath: transactionModeSvg,
-                isSwitchClickable: true,
-                title: 'Recurring Trading',
-                subtitle: 'Set a schedule for Autonomous\nto trade on your behalf',
-                switchValue: light0,
-                onSwitchChanged: (bool value) {
-                  setState(() {
-                    light0 = value;
-                  });
+              GestureDetector(
+                onTap: () {
+                  Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => RecurringTrading()));
                 },
+                child: TradingModeWidget(
+                  svgPath: transactionModeSvg,
+                  isSwitchClickable: true,
+                  title: 'Recurring Trading (RT)',
+                  subtitle: 'Set a schedule for Autonomous\nto trade on your behalf',
+                  switchValue: light0,
+                  onSwitchChanged: (bool value) {
+                    setState(() {
+                      light0 = value;
+                    });
+                  },
+                ),
               ),
               SizedBox(height: 10,),
               TradingModeWidget(

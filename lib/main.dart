@@ -22,8 +22,8 @@ class MyApp extends StatelessWidget {
         useMaterial3: true,
       ),
       home: 
-      // WelcomeScreen()
-      MainPage(),
+      WelcomeScreen()
+      // MainPage(),
     );
   }
 }
