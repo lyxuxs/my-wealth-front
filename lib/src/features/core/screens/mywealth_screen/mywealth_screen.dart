@@ -41,7 +41,10 @@ class MyWealthScreen extends StatelessWidget {
                 sliver: SliverList(
                   delegate: SliverChildListDelegate(
                     [
-                      VerifyBanner(),
+                      // VerifyBanner(),
+                      SizedBox(
+                        height: 10,
+                      ),
                       WalletWidget(),
                       SizedBox(
                         height: 10,

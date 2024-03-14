@@ -175,7 +175,9 @@ class _WithdrawScreenState extends State<WithdrawScreen> {
                     padding: const EdgeInsets.only(left: 10, right: 15),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [],
+                      children: [
+                        Text('BNB Smart Chain (BEP20)'), // Newly addd 
+                      ],
                     ),
                   )),
                 ),

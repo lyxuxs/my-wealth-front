@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:my_wealth/src/constarits/colors.dart';
 import 'package:my_wealth/src/features/authentication/screens/welcome/welcome_screen.dart';
 import 'package:my_wealth/src/features/core/mainpage.dart';
 
@@ -18,12 +19,12 @@ class MyApp extends StatelessWidget {
       title: 'Flutter Demo',
       theme: ThemeData(
         textTheme: GoogleFonts.robotoTextTheme(),
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+        colorScheme: ColorScheme.fromSeed(seedColor: tSecondoryColor),
         useMaterial3: true,
       ),
       home: 
-      WelcomeScreen()
-      // MainPage(),
+      // WelcomeScreen()
+      MainPage(),
     );
   }
 }

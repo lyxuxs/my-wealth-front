@@ -28,25 +28,23 @@ class _MarketsScreenState extends State<MarketsScreen>
     super.dispose();
   }
 
-
   String formatNumber(double number) {
-  String formattedNumber;
-  if (number >= 100000) {
-    formattedNumber = number.toStringAsFixed(0);
-  } else if (number >= 10000) {
-    formattedNumber = number.toStringAsFixed(1);
-  } else if (number >= 1000) {
-    formattedNumber = number.toStringAsFixed(2);
-  } else if (number >= 100) {
-    formattedNumber = number.toStringAsFixed(3);
-  } else if (number >= 10) {
-    formattedNumber = number.toStringAsFixed(4);
-  } else {
-    formattedNumber = number.toStringAsFixed(5);
+    String formattedNumber;
+    if (number >= 100000) {
+      formattedNumber = number.toStringAsFixed(0);
+    } else if (number >= 10000) {
+      formattedNumber = number.toStringAsFixed(1);
+    } else if (number >= 1000) {
+      formattedNumber = number.toStringAsFixed(2);
+    } else if (number >= 100) {
+      formattedNumber = number.toStringAsFixed(3);
+    } else if (number >= 10) {
+      formattedNumber = number.toStringAsFixed(4);
+    } else {
+      formattedNumber = number.toStringAsFixed(5);
+    }
+    return formattedNumber;
   }
-  return formattedNumber;
-}
-  
 
   @override
   Widget build(BuildContext context) {
@@ -60,24 +58,14 @@ class _MarketsScreenState extends State<MarketsScreen>
               padding: EdgeInsets.only(left: 10, right: 20),
               child: AppBar(
                 leading: InkWell(
-                    onTap: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => LoginScreen()));
-                    },
+                    onTap: () {},
                     child: Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: Icon(Icons.edit_outlined, color: Colors.white),
                     )),
                 actions: [
                   InkWell(
-                    onTap: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => LoginScreen()));
-                    },
+                    onTap: () {},
                     child: Icon(CupertinoIcons.add, color: Colors.white),
                   ),
                 ],
@@ -94,7 +82,7 @@ class _MarketsScreenState extends State<MarketsScreen>
                         padding: EdgeInsets.only(
                             left: 20, right: 20, top: 10, bottom: 10),
                         decoration: BoxDecoration(
-                          color: tShado1Color,
+                          color: tShado1Color.withOpacity(0.8),
                           borderRadius: BorderRadius.circular(10),
                         ),
                         child: Row(
@@ -112,13 +100,14 @@ class _MarketsScreenState extends State<MarketsScreen>
                                   style: TextStyle(
                                       color: _currentIndex == 0
                                           ? Colors.blue
-                                          : Colors.black)),
+                                          : Colors.black,
+                                      fontWeight: _currentIndex ==0 ? FontWeight.bold : null)),
                             ),
                             Container(
                               height: 15,
                               width: 1,
-                              color: Color.fromARGB(255, 181, 181, 181)
-                                  .withOpacity(0.4),
+                              color: Color.fromARGB(255, 172, 172, 172)
+                                  ,
                             ),
                             GestureDetector(
                               onTap: () {
@@ -131,7 +120,8 @@ class _MarketsScreenState extends State<MarketsScreen>
                                   style: TextStyle(
                                       color: _currentIndex == 1
                                           ? Colors.blue
-                                          : Colors.black)),
+                                          : Colors.black,
+                                      fontWeight: _currentIndex ==1 ? FontWeight.bold : null)),
                             ),
                           ],
                         )),
@@ -153,16 +143,20 @@ class _MarketsScreenState extends State<MarketsScreen>
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Text(data.currencyPair, style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),),
+                            Text(
+                              data.currencyPair,
+                              style: TextStyle(
+                                  fontSize: 15, fontWeight: FontWeight.bold),
+                            ),
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                               children: [
-                                Text(formatNumber(data.lowValue)..toString()), // Show low value with 6 digits
+                                Text(formatNumber(data.lowValue)
+                                  ..toString()), // Show low value with 6 digits
                                 SizedBox(
                                   width: 40,
                                 ),
                                 Text(formatNumber(data.highValue)..toString()),
-                                
                               ],
                             )
                           ],

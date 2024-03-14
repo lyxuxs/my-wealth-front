@@ -31,6 +31,7 @@ const String icon_exchangeSvg = "assets/images/Icons/icon-exchange.svg";
 const String copyIconSvg = "assets/images/Icons/copy-icon.svg";
 const String qrscannerIconSvg = "assets/images/Icons/scan-qr-code-4.svg";
 const String poolIconSvg = "assets/images/Icons/mywealth-pool-icon.svg";
+const String youtubeiconSvg = "assets/images/Icons/YouTube-icon.svg";
 
 
 //- Chart
