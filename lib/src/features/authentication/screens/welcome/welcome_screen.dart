@@ -22,17 +22,20 @@ class WelcomeScreen extends StatelessWidget {
               Stack(
                 children: [
                   Image(
-                  image: AssetImage(tWelcomeImage),
-                  height: MediaQuery.of(context).size.height * 0.5,
-                  width: MediaQuery.of(context).size.width,
-                  fit: BoxFit.cover,
+                    image: AssetImage(tWelcomeImage),
+                    height: MediaQuery.of(context).size.height * 0.5,
+                    width: MediaQuery.of(context).size.width,
+                    fit: BoxFit.cover,
                   ),
                   Positioned(
-                    bottom: 120,
-                    left: 30,
-                    right: 30,
-                    child: SvgPicture.asset(darklogowithtextSvg, width: 183.16, height: 41.42,)
-                  )
+                      bottom: 120,
+                      left: 30,
+                      right: 30,
+                      child: SvgPicture.asset(
+                        darklogowithtextSvg,
+                        width: 183.16,
+                        height: 41.42,
+                      ))
                 ],
               ),
               Padding(
@@ -46,11 +49,10 @@ class WelcomeScreen extends StatelessWidget {
                     AutoSizeText(
                       tWelcomeTitle,
                       style: TextStyle(
-                        fontFamily: 'PlusJakartaSans',
-                        fontWeight: FontWeight.bold,
-                        fontSize: 30,
-                        height: 1.2
-                      ),
+                          fontFamily: 'PlusJakartaSans',
+                          fontWeight: FontWeight.bold,
+                          fontSize: 30,
+                          height: 1.2),
                       maxLines: 2,
                       textAlign: TextAlign.center,
                     ),
@@ -79,8 +81,7 @@ class WelcomeScreen extends StatelessWidget {
                                   Navigator.push(
                                       context,
                                       MaterialPageRoute(
-                                          builder: (context) =>
-                                              LoginScreen()));
+                                          builder: (context) => LoginScreen()));
                                 },
                                 style: OutlinedButton.styleFrom(
                                   shape: RoundedRectangleBorder(
@@ -137,17 +138,19 @@ class WelcomeScreen extends StatelessWidget {
               const SizedBox(
                 width: 5.0,
               ),
-              Column(mainAxisAlignment: MainAxisAlignment.center, children: [
-                Text(
-                  tDemotrade,
-                  style: TextStyle(
-                      fontFamily: 'PlusJakartaSans',
-                      fontWeight: FontWeight.w600,
-                      fontSize: 15,
-                      color: tLightBlueColor),
-                ),
-              ]),
-              SizedBox(height: 20,)
+              //Column(mainAxisAlignment: MainAxisAlignment.center, children: [
+              //  Text(
+              //    tDemotrade,
+              //    style: TextStyle(
+              //        fontFamily: 'PlusJakartaSans',
+              //        fontWeight: FontWeight.w600,
+              //        fontSize: 15,
+              //        color: tLightBlueColor),
+              //  ),
+              //]),
+              SizedBox(
+                height: 20,
+              )
             ],
           ),
         ),
@@ -155,6 +158,3 @@ class WelcomeScreen extends StatelessWidget {
     );
   }
 }
-
-
-

@@ -36,3 +36,17 @@ const String youtubeiconSvg = "assets/images/Icons/YouTube-icon.svg";
 
 //- Chart
 const String chartSvg = "assets/images/chart/chart-svg.svg";
+
+
+//- Coin Icons
+const String BTCUSDT = "assets/images/coinLogo/bitcoin.png";
+const String ETHUSDT = "assets/images/coinLogo/ethLogo.png";
+const String XRPUSDT = "assets/images/coinLogo/xrpLogo.jpeg";
+const String TRXUSDT = "assets/images/coinLogo/tronLogo.png";
+const String PEPEUSDT = "assets/images/coinLogo/pepeCoinLogo.png";
+
+const String BNBUSDT = "assets/images/coinLogo/bnbLogo.png";
+const String SOLUSDT = "assets/images/coinLogo/solanaLogo.png";
+const String SHIBUSDT = "assets/images/coinLogo/shibaLogo.png";
+const String DOGEUSDT = "assets/images/coinLogo/dogeLogo.jpeg";
+const String ADAUSDT = "assets/images/coinLogo/adaLogo.png";

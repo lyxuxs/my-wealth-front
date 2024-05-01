@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:my_wealth/src/constarits/colors.dart';
 import 'package:my_wealth/src/data_models/user_data.dart';
+import 'package:my_wealth/src/utils/storage.dart';
+import 'dart:convert';
 
 class FixedHeader extends StatelessWidget {
   const FixedHeader({
@@ -43,8 +45,8 @@ class FixedHeader extends StatelessWidget {
                       border: Border.all(color: myWealtlightgreenColor),
                     ),
                     child: Center(
-                        child: Text(
-                      _getInitials(users['19991124']!.Username),
+                        child: Text(_getNameInitials(),
+                      //Text( _getInitials(users['19991124']!.Username),
                       style: TextStyle(
                           color: myWealtlightgreenColor,
                           fontWeight: FontWeight.bold,
@@ -56,15 +58,16 @@ class FixedHeader extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(users['19991124']!.Username.length > 19
-                        ? users['19991124']!.Username.substring(0, 19)
-                        : users['19991124']!.Username,
+                      Text(json.decode(storage.getItem('userDetails'))[0]["cusName"],
+                          /*users['19991124']!.Username.length > 19
+                              ? users['19991124']!.Username.substring(0, 19)
+                              : users['19991124']!.Username,*/
                           style: TextStyle(
                               fontWeight: FontWeight.bold, fontSize: 18)),
-                      Text(
-                        'Your account and details',
-                        style: TextStyle(color: Colors.black54),
-                      ),
+                      // Text(
+                      //   'Your account and details',
+                      //   style: TextStyle(color: Colors.black54),
+                      //  ),
                     ],
                   )
                 ],
@@ -75,7 +78,26 @@ class FixedHeader extends StatelessWidget {
         ));
   }
 
+  String _getNameInitials() {
+    List<dynamic> info =json.decode(storage.getItem('userDetails'));
+    
+    List<String> names = info[0]["cusName"].split(" ");
+    String initials = "";
+    if (names.length > 0) {
+      initials += names[0][0];
+      if (names.length > 1) {
+        initials += names[1][0];
+      }
+    }
+    return initials;
+  }
+
   String _getInitials(String name) {
+    /*List<dynamic> info = Text(json.decode(storage.getItem('userDetails')[0]["cusName"])),
+    print(info);
+    print(info[0]["cusName"]);*/
+    print("yyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyy");
+
     List<String> names = name.split(" ");
     String initials = "";
     if (names.length > 0) {

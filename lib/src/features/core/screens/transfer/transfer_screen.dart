@@ -4,6 +4,10 @@ import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:my_wealth/src/constarits/colors.dart';
 import 'package:my_wealth/src/constarits/image_strings.dart';
+import 'dart:convert';
+import 'package:http/http.dart' as http;
+import 'package:my_wealth/src/constarits/server.dart';
+import 'package:intl/intl.dart';
 
 class TransferScreen extends StatefulWidget {
   const TransferScreen({super.key});
@@ -13,15 +17,81 @@ class TransferScreen extends StatefulWidget {
 }
 
 class _TransferScreenState extends State<TransferScreen> {
-
+  final TextEditingController amountController = TextEditingController();
   String text1 = 'Spot';
   String text2 = 'Funding';
+  List<dynamic> transList = [];
+  String errorMessage = '';
+  double selectedWalletValue = 0.0;
+  String selectedWalletText = '';
+
+  Future<void> fetchTransList() async {
+    final response = await http.get(
+      Uri.parse(API_URL + '/trans'),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+    );
+    final List<dynamic> data = jsonDecode(response.body);
+    transList.clear();
+
+    for (var item in data) {
+      final transData = {
+        'transID': item['transID'],
+        'spot': item['spot'],
+        'funding': item['funding'],
+        'commission': item['commission'],
+        'DateTime': item['DateTime'],
+        'cusID': item['cusID']
+      };
+      transList.add(transData);
+    }
+    walletList = Wallet(transList[0]['spot'], transList[0]['funding']);
+  }
+
+  void _addTrans() async {
+    String amount = amountController.text;
+    double newSpot;
+    double newFunding;
+    DateTime now = DateTime.now();
+    String formattedDate = DateFormat('yyyy-MM-dd HH:mm:ss').format(now);
+    if (selectedWalletText == 'Spot Wallet') {
+      newSpot = selectedWalletValue - double.parse(amount);
+      newFunding = selectedWalletValue + double.parse(amount);
+    } else {
+      newFunding = selectedWalletValue - double.parse(amount);
+      newSpot = selectedWalletValue + double.parse(amount);
+    }
+    try {
+      final responce = await http.post(
+        Uri.parse(API_URL + '/addTrans'),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+        body: jsonEncode({
+          'spot': newSpot,
+          'funding': newFunding,
+          'commission': transList[0]['commission'],
+          'DateTime': formattedDate,
+          'cusID': transList[0]['cusID']
+        }),
+      );
+      print(responce);
+    } catch (e) {
+      print(e);
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    print("...................init");
+    fetchTransList();
+  }
 
   @override
   Widget build(BuildContext context) {
-    TextEditingController controller = TextEditingController();
-    double selectedWalletValue = 0.0;
-    String selectedWalletText = '';
+    //TextEditingController controller = TextEditingController();
 
     if (text1 == 'Spot') {
       selectedWalletValue = walletList.spotWalletValue;
@@ -30,7 +100,7 @@ class _TransferScreenState extends State<TransferScreen> {
       selectedWalletValue = walletList.fundingWalletValue;
       selectedWalletText = 'Funding Wallet';
     }
-    String errorMessage = '';
+
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: true,
@@ -83,7 +153,7 @@ class _TransferScreenState extends State<TransferScreen> {
                         String temp = text1;
                         text1 = text2;
                         text2 = temp;
-              
+
                         if (text1 == 'Spot') {
                           selectedWalletValue = walletList.spotWalletValue;
                           selectedWalletText = 'Spot Wallet';
@@ -136,8 +206,8 @@ class _TransferScreenState extends State<TransferScreen> {
                   height: 20,
                 ),
                 Padding(
-                  padding:
-                      const EdgeInsets.only(left: 16.0, right: 16.0, bottom: 5.0),
+                  padding: const EdgeInsets.only(
+                      left: 16.0, right: 16.0, bottom: 5.0),
                   child: Text("Amount"),
                 ),
                 Container(
@@ -164,7 +234,8 @@ class _TransferScreenState extends State<TransferScreen> {
                                   fontWeight: FontWeight.w400,
                                   fontSize: 15),
                             ),
-                            controller: controller,
+                            controller: amountController,
+                            //controller: controller,
                             onChanged: (value) {
                               setState(() {
                                 double? inputValue = double.tryParse(value);
@@ -197,22 +268,22 @@ class _TransferScreenState extends State<TransferScreen> {
                                 width: 10.0,
                               ),
                               GestureDetector(
-                                  onTap: () {
+                                  /* onTap: () {
                                     setState(() {
                                       // Autofill the TextFormField with selectedWalletValue
                                       // Replace the 'controller' with your TextFormField's controller
-                                      controller.text =
-                                          selectedWalletValue.toString();
+                                      controller.text =selectedWalletValue.toString();
+                                    
                                     });
-                                  },
+                                  },*/
                                   child: Text(
-                                    'Max',
-                                    style: TextStyle(
-                                        color: authBtnBgColor,
-                                        fontFamily: 'GT-America-Standard',
-                                        fontWeight: FontWeight.w500,
-                                        fontSize: 15),
-                                  )),
+                                'Max',
+                                style: TextStyle(
+                                    color: authBtnBgColor,
+                                    fontFamily: 'GT-America-Standard',
+                                    fontWeight: FontWeight.w500,
+                                    fontSize: 15),
+                              )),
                             ],
                           ),
                         )
@@ -228,7 +299,8 @@ class _TransferScreenState extends State<TransferScreen> {
                       children: [
                         if (errorMessage.isNotEmpty)
                           TextSpan(
-                            text: errorMessage.isNotEmpty ? ' $errorMessage' : '',
+                            text:
+                                errorMessage.isNotEmpty ? ' $errorMessage' : '',
                             style: TextStyle(
                               color: Colors.red,
                               fontFamily: 'GT-America-Standard',
@@ -263,21 +335,26 @@ class _TransferScreenState extends State<TransferScreen> {
                     ),
                   ),
                 ),
-                SizedBox(height: 30,),
+                SizedBox(
+                  height: 30,
+                ),
                 Padding(
                   padding: const EdgeInsets.all(10.0),
                   child: SizedBox(
                     width: double.infinity,
                     height: 49,
                     child: ElevatedButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        _addTrans();
+                      },
                       style: ButtonStyle(
                         shape: MaterialStateProperty.all(
                           RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(9),
                           ),
                         ),
-                        backgroundColor: MaterialStateProperty.all(tLightBlueColor),
+                        backgroundColor:
+                            MaterialStateProperty.all(tLightBlueColor),
                         textStyle: MaterialStateProperty.all(
                           const TextStyle(color: Colors.white),
                         ),
@@ -303,7 +380,6 @@ class _TransferScreenState extends State<TransferScreen> {
     );
   }
 }
-
 
 class Wallet {
   double spotWalletValue;

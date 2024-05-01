@@ -7,6 +7,8 @@ import 'package:my_wealth/src/constarits/colors.dart';
 import 'package:my_wealth/src/constarits/image_strings.dart';
 import 'package:my_wealth/src/constarits/sizes.dart';
 import 'package:qr_flutter/qr_flutter.dart';
+import 'package:my_wealth/src/utils/storage.dart';
+import 'dart:convert';
 
 class InviteFrinedsScreen extends StatefulWidget {
   const InviteFrinedsScreen({super.key});
@@ -473,10 +475,10 @@ class MyCommissionWidget extends StatelessWidget {
                     GestureDetector(
                       onTap: () async {
                       await Clipboard.setData(
-                              ClipboardData(text: 'REFERRAL01MCO'))
+                              ClipboardData(text: json.decode(storage.getItem('userDetails'))[0]['myreferal']))
                           .then((_) {
                         ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(content: Text("'REFERRAL01MCO' copied to clipboard")));
+                            SnackBar(content: Text(json.decode(storage.getItem('userDetails'))[0]['myreferal']+" copied to clipboard")));
                       });
                     },
                       child: Container(
@@ -487,7 +489,7 @@ class MyCommissionWidget extends StatelessWidget {
                             shape: BoxShape.rectangle,
                             borderRadius: BorderRadius.circular(8),
                             color: tShadoColor),
-                        child: Text('REFERRAL01MCO'),
+                        child: Text(json.decode(storage.getItem('userDetails'))[0]['myreferal']),
                       ),
                     )
                   ],

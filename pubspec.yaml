@@ -34,6 +34,8 @@ dependencies:
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
+  localstorage: ^4.0.0+1
+  intl: ^0.17.0
   cupertino_icons: ^1.0.2
   flutter_launcher_icons: ^0.13.1
   auto_size_text: ^3.0.0
@@ -42,12 +44,32 @@ dependencies:
   qr_flutter: ^4.1.0
   google_fonts: ^6.1.0
   qr_code_scanner: ^1.0.1
-  webview_flutter: ^3.0.0
+  webview_flutter: ^4.4.2
   dotted_line: ^3.2.2
+  http:
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
+  flutter_launcher_icons: "^0.13.1"
+
+flutter_launcher_icons:
+  android: "launcher_icon"
+  ios: true
+  image_path: "assets/logo.png"
+  min_sdk_android: 21 # android min sdk min:16, default 21
+  web:
+    generate: true
+    image_path: "assets/logo.png"
+    background_color: "#000000"
+    theme_color: "#000000"
+  windows:
+    generate: true
+    image_path: "assets/logo.png"
+    icon_size: 48 # min:48, max:256, default: 48
+  macos:
+    generate: true
+    image_path: "assets/logo.png"
 
 flutter_icons:
   image_path: "assets/logo.png"
@@ -80,6 +102,7 @@ flutter:
     - assets/images/Icons/YouTube-icon.svg
     - assets/images/welcome_screen/
     - assets/images/chart/
+    - assets/images/coinLogo/
     - assets/images/welcome_screen/WelcomeImage.png
   #   - images/a_dot_ham.jpeg
 

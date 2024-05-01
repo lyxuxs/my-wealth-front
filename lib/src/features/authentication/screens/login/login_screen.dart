@@ -2,6 +2,12 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:my_wealth/src/common_widgets/custom_textfield.dart';
 import 'package:my_wealth/src/constarits/colors.dart';
+import 'package:my_wealth/src/constarits/server.dart';
+import 'package:my_wealth/src/features/authentication/screens/welcome/welcome_screen.dart';
+import 'package:http/http.dart' as http;
+import 'package:my_wealth/src/utils/storage.dart';
+import 'dart:convert';
+import 'package:my_wealth/src/features/core/mainpage.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
@@ -125,7 +131,9 @@ class _LoginScreenState extends State<LoginScreen> {
                 width: double.infinity,
                 height: 49,
                 child: ElevatedButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    _loginUser();
+                  },
                   // emailController.text.isNotEmpty &&
                   //         passwordController.text.isNotEmpty
                   //     ? loginUser
@@ -156,16 +164,43 @@ class _LoginScreenState extends State<LoginScreen> {
               const SizedBox(
                 height: 40,
               ),
-              const Center(
-                  child: Text('Forgot Password?',
-                      style: TextStyle(
-                          fontSize: 14,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.green))),
+              //  const Center(
+              //      child: Text('Forgot Password?',
+              //          style: TextStyle(
+              //              fontSize: 14,
+              //              fontWeight: FontWeight.bold,
+              //              color: Colors.green))),
             ],
           ),
         ),
       ),
     );
   }
+
+  void _loginUser() async {
+    String email = emailController.text;
+    String password = passwordController.text;
+    try {
+      final response = await http.post(
+        Uri.parse(API_URL + '/login'),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+        body: jsonEncode({'email': email, 'password': password}),
+      );
+
+      if (response.body != "No User Found") {
+        print(response.body);
+        //storage.setItem('userDetails', response.body);
+        final info = json.encode(response.body);
+        storage.setItem('userDetails', info);
+
+        Navigator.push(
+            context, MaterialPageRoute(builder: (context) => MainPage()));
+      }
+    } catch (e) {
+      print(e);
+    }
+  }
 }
+

@@ -31,75 +31,75 @@ class _ChartScreenState extends State<ChartScreen> {
       body: SingleChildScrollView(
           child: Column(
         children: [
-          Container(
-            padding: EdgeInsets.all(10),
-            width: double.infinity,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  '\$27,672.36',
-                  style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Row(
-                      children: [
-                        Icon(
-                          Icons.arrow_circle_up_rounded,
-                          size: 22,
-                        ),
-                        SizedBox(
-                          width: 5,
-                        ),
-                        Text('\$123.45'),
-                      ],
-                    ),
-                    Row(
-                      children: [
-                        Text('Vol:'),
-                        Text('\$320.45M'),
-                      ],
-                    ),
-                  ],
-                ),
-                SizedBox(
-                  height: 20,
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Expanded(
-                      child: Container(
-                        padding: EdgeInsets.only(
-                            left: 10, right: 10, top: 15, bottom: 15),
-                        decoration: BoxDecoration(
-                            color: Color.fromARGB(141, 228, 72, 60),
-                            border: Border.all(color: tredColor, width: 2),
-                            borderRadius: BorderRadius.circular(10)),
-                        child: Center(child: Text("Sell")),
-                      ),
-                    ),
-                    SizedBox(
-                      width: 10,
-                    ),
-                    Expanded(
-                      child: Container(
-                        padding: EdgeInsets.only(
-                            left: 10, right: 10, top: 15, bottom: 15),
-                        decoration: BoxDecoration(
-                            color: tGreenColor,
-                            border: Border.all(color: tGreenColor, width: 2),
-                            borderRadius: BorderRadius.circular(10)),
-                        child: Center(child: Text("Buy")),
-                      ),
-                    ),
-                  ],
-                )
-              ],
-            ),
-          ),
+          //   Container(
+          //     padding: EdgeInsets.all(10),
+          //     width: double.infinity,
+          //     child: Column(
+          //       crossAxisAlignment: CrossAxisAlignment.start,
+          //       children: [
+          //         Text(
+          //           '\$27,672.36',
+          //           style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+          //         ),
+          //         Row(
+          //           mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          //            children: [
+          //             Row(
+          //               children: [
+          //                 Icon(
+          //                   Icons.arrow_circle_up_rounded,
+          //                   size: 22,
+          //                 ),
+          //                SizedBox(
+          //                  width: 5,
+          //                ),
+          //               Text('\$123.45'),
+          //             ],
+          //           ),
+          //           Row(
+          //             children: [
+          //               Text('Vol:'),
+          //                 Text('\$320.45M'),
+          //             ],
+          //          ),
+          //         ],
+          //         ),
+          //       SizedBox(
+          //        height: 20,
+          //       ),
+          //        Row(
+          //          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          //          children: [
+          //            Expanded(
+          //              child: Container(
+          //                padding: EdgeInsets.only(
+          //                    left: 10, right: 10, top: 15, bottom: 15),
+          //                decoration: BoxDecoration(
+          //                    color: Color.fromARGB(141, 228, 72, 60),
+          //                    border: Border.all(color: tredColor, width: 2),
+          //                    borderRadius: BorderRadius.circular(10)),
+          //                child: Center(child: Text("Sell")),
+          //              ),
+          //            ),
+          //            SizedBox(
+          //              width: 10,
+          //            ),
+          //            Expanded(
+          //              child: Container(
+          //                padding: EdgeInsets.only(
+          //                    left: 10, right: 10, top: 15, bottom: 15),
+          //                decoration: BoxDecoration(
+          //                    color: tGreenColor,
+          //                    border: Border.all(color: tGreenColor, width: 2),
+          //                    borderRadius: BorderRadius.circular(10)),
+          //                child: Center(child: Text("Buy")),
+          //              ),
+          //            ),
+          //          ],
+          //        )
+          //      ],
+          //    ),
+          //  ),
           Container(
               child: SvgPicture.asset(
             chartSvg,
@@ -382,8 +382,11 @@ class _ChartScreenState extends State<ChartScreen> {
               Padding(
                 padding: const EdgeInsets.all(10),
                 child: Align(
-                  alignment: Alignment.centerLeft,
-                  child: Text('Spread of \$0.01 USD',textAlign: TextAlign.left,)),
+                    alignment: Alignment.centerLeft,
+                    child: Text(
+                      'Spread of \$0.01 USD',
+                      textAlign: TextAlign.left,
+                    )),
               ),
               Container(
                 height: 30,

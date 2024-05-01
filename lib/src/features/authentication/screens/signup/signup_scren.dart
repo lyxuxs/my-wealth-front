@@ -1,11 +1,17 @@
+import 'dart:convert';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:my_wealth/src/common_widgets/custom_textfield.dart';
 import 'package:my_wealth/src/constarits/colors.dart';
 import 'package:my_wealth/src/constarits/image_strings.dart';
+import 'package:my_wealth/src/constarits/server.dart';
 import 'package:my_wealth/src/constarits/text_strings.dart';
+import 'package:http/http.dart' as http;
 import 'package:my_wealth/src/features/authentication/screens/login/login_screen.dart';
+
+import '../profile_verify_screen/profile_verify_screen.dart';
 
 class SignupScreen extends StatefulWidget {
   const SignupScreen({Key? key}) : super(key: key);
@@ -74,8 +80,9 @@ class _SignupScreenState extends State<SignupScreen> {
               Step2Widget(
                   nameController: nameController,
                   emailController: emailController,
-                  passwordController: passwordController),
-          ],
+                  passwordController: passwordController
+                  ),
+              ],
         ),
       ),
     );
@@ -83,63 +90,61 @@ class _SignupScreenState extends State<SignupScreen> {
 
   Column Step1Widget(BuildContext context) {
     return Column(
-              children: [
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const Text(
-                      tReferralText,
-                      style: TextStyle(
-                          fontSize: 13, fontWeight: FontWeight.w600),
-                    ),
-                    const SizedBox(
-                      height: 5,
-                    ),
-                    CustomTextField(
-                      controller: referralController,
-                      hintText: 'REFERRAL01MCO',
-                    ),
-                    const SizedBox(
-                      height: 3,
-                    ),
-                    const Text(
-                      tReferralConditionText,
-                      style: TextStyle(fontSize: 9),
-                    ),
-                  ],
+      children: [
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const Text(
+              tReferralText,
+              style: TextStyle(fontSize: 13, fontWeight: FontWeight.w600),
+            ),
+            const SizedBox(
+              height: 5,
+            ),
+            CustomTextField(
+              controller: referralController,
+              hintText: 'REFERRAL01MCO',
+            ),
+            const SizedBox(
+              height: 3,
+            ),
+            const Text(
+              tReferralConditionText,
+              style: TextStyle(fontSize: 9),
+            ),
+          ],
+        ),
+        const SizedBox(height: 40),
+        SizedBox(
+          width: double.infinity,
+          height: 49,
+          child: ElevatedButton(
+            onPressed: _nextStep,
+            style: ButtonStyle(
+              shape: MaterialStateProperty.all(
+                RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(9),
                 ),
-                const SizedBox(height: 40),
-                SizedBox(
-                  width: double.infinity,
-                  height: 49,
-                  child: ElevatedButton(
-                    onPressed: _nextStep,
-                    style: ButtonStyle(
-                      shape: MaterialStateProperty.all(
-                        RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(9),
-                        ),
-                      ),
-                      backgroundColor:
-                          MaterialStateProperty.all(authBtnBgColor),
-                      textStyle: MaterialStateProperty.all(
-                        const TextStyle(color: Colors.white),
-                      ),
-                      minimumSize: MaterialStateProperty.all(
-                        Size(MediaQuery.of(context).size.width / 2.5, 50),
-                      ),
-                    ),
-                    child: const Text(
-                      "Next",
-                      style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 15,
-                          fontWeight: FontWeight.bold),
-                    ),
-                  ),
-                ),
-              ],
-            );
+              ),
+              backgroundColor: MaterialStateProperty.all(authBtnBgColor),
+              textStyle: MaterialStateProperty.all(
+                const TextStyle(color: Colors.white),
+              ),
+              minimumSize: MaterialStateProperty.all(
+                Size(MediaQuery.of(context).size.width / 2.5, 50),
+              ),
+            ),
+            child: const Text(
+              "Next",
+              style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 15,
+                  fontWeight: FontWeight.bold),
+            ),
+          ),
+        ),
+      ],
+    );
   }
 }
 
@@ -203,7 +208,218 @@ class JoinMyWealthHeader extends StatelessWidget {
     );
   }
 }
+/*
+class Step2Widget extends StatelessWidget {
+  const Step2Widget({
+    super.key,
+    required this.nameController,
+    required this.emailController,
+    required this.passwordController,
+  });
 
+  Column Step2Widget(BuildContext context) {
+    return Column(
+      children: [
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const Text(
+              "Full Name",
+              style: TextStyle(fontSize: 13, fontWeight: FontWeight.w600),
+            ),
+            const SizedBox(
+              height: 5,
+            ),
+            CustomTextField(
+              controller: nameController,
+              hintText: 'Enter your name',
+            ),
+            const SizedBox(
+              height: 3,
+            ),
+            const Text(
+              "Please enter your full name.",
+              style: TextStyle(fontSize: 10),
+            ),
+          ],
+        ),
+        const SizedBox(height: 20),
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const Text(
+              "Email Address",
+              style: TextStyle(fontSize: 13, fontWeight: FontWeight.w600),
+            ),
+            const SizedBox(
+              height: 5,
+            ),
+            CustomTextField(
+              controller: emailController,
+              hintText: 'johnsmith@gmail.com',
+            ),
+            const SizedBox(
+              height: 3,
+            ),
+            const Text(
+              "We will send you an email to verify your account.",
+              style: TextStyle(fontSize: 10),
+            ),
+          ],
+        ),
+        const SizedBox(height: 20),
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const Text(
+              "Password",
+              style: TextStyle(fontSize: 13, fontWeight: FontWeight.w600),
+            ),
+            const SizedBox(
+              height: 5,
+            ),
+            CustomTextField(
+              controller: passwordController,
+              hintText: 'Enter your password',
+            ),
+          ],
+        ),
+        const SizedBox(height: 40),
+        SizedBox(
+          width: double.infinity,
+          height: 49,
+          child: ElevatedButton(
+            onPressed: () {
+              _registerUser();
+            },
+            */
+/*style: ButtonStyle(
+              shape: MaterialStateProperty.all(
+                RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(9),
+                ),
+              ),
+              backgroundColor: MaterialStateProperty.all(authBtnBgColor),
+               textStyle: MaterialStateProperty.all(
+                const TextStyle(color: Colors.white),
+              ),
+              minimumSize: MaterialStateProperty.all(
+                Size(MediaQuery.of(context).size.width / 2.5, 50),
+              ),
+            ),*/
+    /*
+
+            child: const Text(
+              "Create an account",
+              style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 15,
+                  fontWeight: FontWeight.bold),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  void _registerUser() async {
+    String name = nameController.text;
+    String email = emailController.text;
+    String password = passwordController.text;
+    String referral = referralController.text;
+
+    print(name);
+    print(email);
+    print(password);
+    print(referral);
+
+    try {
+      final responce = await http.post(
+        Uri.parse(API_URL + '/register'),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+        body: jsonEncode({
+          'cusName': name,
+          'imgURL': "",
+          'referal': referral,
+          'email': email,
+          'RT': false,
+          'STP': false,
+          'password': password
+        }),
+      );
+      print(responce);
+      Navigator.push(
+          context, MaterialPageRoute(builder: (context) => LoginScreen()));
+    } catch (e) {
+      print("eeeeeeeeeeeeeeeeeeee");
+      print(e);
+    }
+  }
+}
+
+class JoinMyWealthHeader extends StatelessWidget {
+  const JoinMyWealthHeader({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        Row(
+          children: [
+            const Text(
+              "Join to",
+              style: TextStyle(
+                  fontSize: 22,
+                  fontWeight: FontWeight.w500,
+                  color: authBtnBgColor),
+            ),
+            const SizedBox(
+              width: 5,
+            ),
+            new SvgPicture.asset(darklogowithtextSvg, width: 120),
+          ],
+        ),
+        InkWell(
+          onTap: () => Navigator.push(context,
+              MaterialPageRoute(builder: (context) => const LoginScreen())),
+          child: Container(
+            decoration: BoxDecoration(
+                color: Colors.white,
+                border: Border.all(color: Colors.black54),
+                borderRadius: BorderRadius.circular(50)),
+            child: const Padding(
+              padding:
+                  EdgeInsets.only(left: 8.0, right: 8.0, top: 4, bottom: 4),
+              child: Row(
+                children: [
+                  Icon(
+                    CupertinoIcons.square_arrow_right,
+                    color: Colors.black54,
+                    size: 20,
+                  ),
+                  SizedBox(
+                    width: 5,
+                  ),
+                  Text(
+                    'Login',
+                    style: TextStyle(color: Colors.black54, fontSize: 12),
+                  )
+                ],
+              ),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+}
+*/
 class Step2Widget extends StatelessWidget {
   const Step2Widget({
     super.key,
@@ -289,7 +505,15 @@ class Step2Widget extends StatelessWidget {
           width: double.infinity,
           height: 49,
           child: ElevatedButton(
-            onPressed: () {},
+            onPressed: () async {
+              final responseCode = await _registerUser();
+              if (responseCode == 200) {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => ProfileVerifyScreen()));
+              }
+            },
             style: ButtonStyle(
               shape: MaterialStateProperty.all(
                 RoundedRectangleBorder(
@@ -315,5 +539,34 @@ class Step2Widget extends StatelessWidget {
         ),
       ],
     );
+  }
+
+  Future<int> _registerUser() async {
+    String name = nameController.text;
+    String email = emailController.text;
+    String password = passwordController.text;
+    // String referal = referralController.text;
+
+    try {
+      final responce = await http.post(
+        Uri.parse(API_URL + '/register'),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+        body: jsonEncode({
+          'cusName': name,
+          'imgURL': "",
+          'referal': "",
+          'email': email,
+          'RT': false,
+          'STP': false,
+          'password': password
+        }),
+      );
+      print(responce);
+      return responce.statusCode;
+    } catch (e) {
+      return 500;
+    }
   }
 }

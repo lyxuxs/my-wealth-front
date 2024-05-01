@@ -1,22 +1,23 @@
-// forex_market_data.dart
+// import 'dart:ffi';
 
 class ForexMarketData {
-  final String currencyPair;
-  final double highValue;
-  final double lowValue;
+  String image;
+  String symbol;
+  double current_price;
 
   ForexMarketData({
-    required this.currencyPair,
-    required this.highValue,
-    required this.lowValue,
+    required this.image,
+    required this.symbol,
+    required this.current_price,
   });
+
+  factory ForexMarketData.fromJson(Map<String, dynamic> json) {
+    return ForexMarketData(
+      image: json['image'],
+      symbol: json['symbol'],
+      current_price: json['current_price'].toDouble(),
+    );
+  }
 }
 
-List<ForexMarketData> forexMarketDataList = [
-  ForexMarketData(currencyPair: 'EUR/USD', highValue: 1.25, lowValue: 1.15456),
-  ForexMarketData(currencyPair: 'GBP/USD', highValue: 1.4, lowValue: 1.3),
-  ForexMarketData(currencyPair: 'USD/JPY', highValue: 110, lowValue: 105),
-  ForexMarketData(currencyPair: 'AUD/USD', highValue: 0.78, lowValue: 0.72),
-  ForexMarketData(currencyPair: 'USD/CAD', highValue: 1.28, lowValue: 1.22),
-  ForexMarketData(currencyPair: 'USD/CHF', highValue: 0.95, lowValue: 0.88),
-];
+List<ForexMarketData> coinList = [];

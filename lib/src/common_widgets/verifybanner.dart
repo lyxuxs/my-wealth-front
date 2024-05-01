@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:my_wealth/src/features/authentication/screens/profile_verify_screen.dart/profile_verify_screen.dart';
+import 'package:my_wealth/src/features/authentication/screens/profile_verify_screen/profile_verify_screen.dart';
 
 class VerifyBanner extends StatelessWidget {
   const VerifyBanner({

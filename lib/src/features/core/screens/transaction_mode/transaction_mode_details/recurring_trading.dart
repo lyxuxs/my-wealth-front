@@ -24,6 +24,7 @@ class RecurringTrading extends StatelessWidget {
         ),
         centerTitle: true,
       ),
+      // newly added
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.all(10),
