@@ -47,7 +47,8 @@ class TradesScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     fetchDataAndUpdateList();
     return Scaffold(
-      appBar: AppBar(
+      appBar: 
+      AppBar(
         automaticallyImplyLeading: false,
         backgroundColor: tLightBlueColor,
         elevation: 0,
@@ -63,44 +64,46 @@ class TradesScreen extends StatelessWidget {
       ),
       body: SingleChildScrollView(
         scrollDirection: Axis.vertical,
-        child: Column(children: [
-          SizedBox(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Padding(
-                  padding: const EdgeInsets.all(10),
-                  child: Text(
-                    'Positions',
-                    style: TextStyle(fontWeight: FontWeight.w600, fontSize: 15),
-                  ),
-                ),
-                Container(
-                  height: 1.0,
-                  color: Color.fromARGB(255, 181, 181, 181).withOpacity(0.1),
-                )
-              ],
-            ),
-          ),
-          SizedBox(
-            //height: MediaQuery.of(context).size.height * 0.6,
-            child: ListView(
-              shrinkWrap: true,
-              children: tradeList.map((data) {
-                print("::::::::::::::::::::::::::::::::::::");
-                print(data);
-                return Column(children: [
-                  Text("Balance: " + data['balance'].toString()),
-                  Text("Equity: " + data['equity'].toString()),
-                  Text("Margin: " + data['margin'].toString()),
-                  Text("Free Margin: " + data['freeMargin'].toString()),
-                  Text("Margin Level(%): " + data['marginLevel'].toString()),
-                ]);
-              }).toList(),
-            ),
-          ),
-          tradewidget()
-        ]),
+        child: Text("No Trade Yet.")
+        // Column(children: [
+        //   SizedBox(
+        //     child: Column(
+        //       crossAxisAlignment: CrossAxisAlignment.start,
+        //       children: [
+        //         Padding(
+        //           padding: const EdgeInsets.all(10),
+        //           child: Text(
+        //             'Positions',
+        //             style: TextStyle(fontWeight: FontWeight.w600, fontSize: 15),
+        //           ),
+        //         ),
+        //         Container(
+        //           height: 1.0,
+        //           color: Color.fromARGB(255, 181, 181, 181).withOpacity(0.1),
+        //         )
+        //       ],
+        //     ),
+        //   ),
+        //   SizedBox(
+        //     //height: MediaQuery.of(context).size.height * 0.6,
+        //     child: ListView(
+        //       shrinkWrap: true,
+        //       children: tradeList.map((data) {
+        //         print("::::::::::::::::::::::::::::::::::::");
+        //         print(data);
+        //         return Column(children: [
+        //           Text("Balance: " + data['balance'].toString()),
+        //           Text("Equity: " + data['equity'].toString()),
+        //           Text("Margin: " + data['margin'].toString()),
+        //           Text("Free Margin: " + data['freeMargin'].toString()),
+        //           Text("Margin Level(%): " + data['marginLevel'].toString()),
+        //         ]);
+        //       }).toList(),
+        //     ),
+        //   ),
+        //   tradewidget()
+        // ]),
+      
       ),
     );
   }

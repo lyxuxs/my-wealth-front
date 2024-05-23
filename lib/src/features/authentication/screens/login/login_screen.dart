@@ -206,8 +206,7 @@ class _LoginScreenState extends State<LoginScreen> {
       if (responseBody["code"] == 200) {
         
         SharedPreferences prefs = await SharedPreferences.getInstance();
-        // SharedPreferences prefs =SharedPreferences.getInstance() as SharedPreferences;
-        prefs.setString('userDetails', responseBody.toString());
+          prefs.setString('userDetails', json.encode(responseBody));
         storage.setItem('userDetails', responseBody);
         
             await prefs.setBool('isLoggedIn', true);

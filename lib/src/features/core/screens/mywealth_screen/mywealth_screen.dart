@@ -28,7 +28,7 @@ class MyWealthScreen extends StatelessWidget {
             slivers: <Widget>[
               SliverAppBar(
                 automaticallyImplyLeading: false,
-                expandedHeight: 50.0, // adjust the height as needed
+                expandedHeight: 50.0,
                 floating: true,
                 flexibleSpace: FlexibleSpaceBar(
                   background: HideableHeader(),

@@ -4,6 +4,9 @@ import 'package:flutter_svg/svg.dart';
 import 'package:my_wealth/src/constarits/colors.dart';
 import 'package:my_wealth/src/constarits/image_strings.dart';
 import 'package:my_wealth/src/features/core/models/tradedata/trade_data.dart';
+import 'dart:async';
+import 'package:intl/intl.dart';
+
 
 class HistoryScreen extends StatefulWidget {
   const HistoryScreen({super.key});
@@ -19,25 +22,40 @@ class _HistoryScreenState extends State<HistoryScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: PreferredSize(
-        preferredSize: Size.fromHeight(80),
-        child: AppBar(
-          automaticallyImplyLeading: false,
-          backgroundColor: tLightBlueColor,
-          elevation: 0,
-          centerTitle: false,
-          flexibleSpace: Container(
-            alignment: Alignment.center,
-            padding: EdgeInsets.only(top: 30),
-            child: Container(
-              alignment: Alignment.center,
-              child: showDateRangeInput
-                  ? buildDateRangeInput()
-                  : buildDefaultContent(),
-            ),
+      appBar: AppBar(
+        automaticallyImplyLeading: false,
+        backgroundColor: tLightBlueColor,
+        elevation: 0,
+        centerTitle: false,
+        title: const Text(
+          'History',
+          style: TextStyle(
+            fontSize: 20,
+            fontWeight: FontWeight.w500,
+            color: Colors.white,
           ),
         ),
       ),
+      //  PreferredSize(
+      //   preferredSize: Size.fromHeight(80),
+      //   child:
+      //   AppBar(
+      //     automaticallyImplyLeading: false,
+      //     backgroundColor: tLightBlueColor,
+      //     elevation: 0,
+      //     centerTitle: false,
+      //     flexibleSpace: Container(
+      //       alignment: Alignment.center,
+      //       padding: EdgeInsets.only(top: 30),
+      //       child: Container(
+      //         alignment: Alignment.center,
+      //         child: showDateRangeInput
+      //             ? buildDateRangeInput()
+      //             : buildDefaultContent(),
+      //       ),
+      //     ),
+      //   ),
+      // ),
       // body: Column(
       //   mainAxisAlignment: MainAxisAlignment.center,
       //   children: [
@@ -45,11 +63,12 @@ class _HistoryScreenState extends State<HistoryScreen> {
       // ]),
       body: SingleChildScrollView(
         scrollDirection: Axis.vertical,
-        child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
-          HistoryMainDetailsWidget(),
-          transactionDetailsWidget(),
-          TradetransactionDetailsWidget(),
-        ]),
+        child: Text("No History"),
+        // Column(mainAxisAlignment: MainAxisAlignment.center, children: [
+        //   HistoryMainDetailsWidget(),
+        //   TransactionDetailsWidget(),
+        //   TradetransactionDetailsWidget(),
+        // ]),
       ),
     );
   }
@@ -80,13 +99,13 @@ class _HistoryScreenState extends State<HistoryScreen> {
                     width: double.infinity,
                     color: Colors.white,
                     child: CupertinoDatePicker(
-                          backgroundColor: Colors.white,
-                          initialDateTime: startDate,
-                          onDateTimeChanged: (DateTime newTime) {
-                            setState(() => startDate = newTime);
-                          },
-                          mode: CupertinoDatePickerMode.date,
-                        ),
+                      backgroundColor: Colors.white,
+                      initialDateTime: startDate,
+                      onDateTimeChanged: (DateTime newTime) {
+                        setState(() => startDate = newTime);
+                      },
+                      mode: CupertinoDatePickerMode.date,
+                    ),
                   );
                 },
               );
@@ -121,13 +140,13 @@ class _HistoryScreenState extends State<HistoryScreen> {
                     width: double.infinity,
                     color: Colors.white,
                     child: CupertinoDatePicker(
-                          backgroundColor: Colors.white,
-                          initialDateTime: endDate,
-                          onDateTimeChanged: (DateTime newTime) {
-                            setState(() => endDate = newTime);
-                          },
-                          mode: CupertinoDatePickerMode.date,
-                        ),
+                      backgroundColor: Colors.white,
+                      initialDateTime: endDate,
+                      onDateTimeChanged: (DateTime newTime) {
+                        setState(() => endDate = newTime);
+                      },
+                      mode: CupertinoDatePickerMode.date,
+                    ),
                   );
                 },
               );
@@ -291,10 +310,42 @@ class TradetransactionDetailsWidget extends StatelessWidget {
   }
 }
 
-class transactionDetailsWidget extends StatelessWidget {
-  const transactionDetailsWidget({
-    super.key,
-  });
+class TransactionDetailsWidget extends StatefulWidget {
+  const TransactionDetailsWidget({Key? key}) : super(key: key);
+
+  @override
+  _TransactionDetailsWidgetState createState() => _TransactionDetailsWidgetState();
+}
+class _TransactionDetailsWidgetState extends State<TransactionDetailsWidget> {
+ late String _dateTimeString;
+  late Timer _timer;
+
+  @override
+  void initState() {
+    super.initState();
+    _updateDateTime();
+    _startTimer();
+  }
+
+  @override
+  void dispose() {
+    _timer.cancel();
+    super.dispose();
+  }
+
+  void _updateDateTime() {
+    final now = DateTime.now();
+    final formatter = DateFormat('yyyy.MM.dd HH:mm:ss');
+    setState(() {
+      _dateTimeString = formatter.format(now);
+    });
+  }
+
+  void _startTimer() {
+    _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
+      _updateDateTime();
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -316,8 +367,8 @@ class transactionDetailsWidget extends StatelessWidget {
                         style: TextStyle(
                             fontWeight: FontWeight.w600, fontSize: 15),
                       ),
-                      const Text(
-                        "2024.02.14 22:00:00",
+                       Text(
+                        _dateTimeString,
                         style: TextStyle(
                           fontWeight: FontWeight.w600,
                         ),
@@ -331,7 +382,7 @@ class transactionDetailsWidget extends StatelessWidget {
                         "Deposit",
                       ),
                       const Text(
-                        "100 000.00",
+                        "0.00",
                         style: TextStyle(
                           color: tLightBlueColor,
                           fontWeight: FontWeight.w600,
@@ -397,7 +448,7 @@ class HistoryMainDetailsWidget extends StatelessWidget {
                         "Deposit:",
                       ),
                       const Text(
-                        "100 000.00",
+                        "0.00",
                       ),
                     ],
                   ),
@@ -419,7 +470,7 @@ class HistoryMainDetailsWidget extends StatelessWidget {
                         "Balance:",
                       ),
                       const Text(
-                        "100 000.00",
+                        "0.00",
                       ),
                     ],
                   ),

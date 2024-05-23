@@ -9,6 +9,7 @@ import 'package:my_wealth/src/constarits/sizes.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 import 'package:my_wealth/src/utils/storage.dart';
 import 'dart:convert';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class InviteFrinedsScreen extends StatefulWidget {
   const InviteFrinedsScreen({super.key});
@@ -277,8 +278,7 @@ class _InviteFrinedsScreenState extends State<InviteFrinedsScreen> {
               child: Column(
                 children: [
                   Padding(
-                    padding: const EdgeInsets.only(
-                      top: 10, bottom: 10),
+                    padding: const EdgeInsets.only(top: 10, bottom: 10),
                     child: Column(
                         mainAxisAlignment: MainAxisAlignment.start,
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -337,7 +337,7 @@ class _InviteFrinedsScreenState extends State<InviteFrinedsScreen> {
       appBar: AppBar(
         automaticallyImplyLeading: true,
         iconTheme: IconThemeData(
-          color: Colors.white, //change your color here
+          color: Colors.white, 
         ),
         backgroundColor: tLightBlueColor,
         elevation: 0,
@@ -421,122 +421,145 @@ class MyCommissionWidget extends StatelessWidget {
     super.key,
   });
 
+  Future<String?> _getMyDetails() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    return prefs.getString('userDetails').toString();
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Container(
-      margin: EdgeInsets.all(10),
-      decoration: BoxDecoration(
-          border: Border.all(color: tGrayColor),
-          borderRadius: BorderRadius.all(Radius.circular(10))),
-      child: Padding(
-        padding: const EdgeInsets.all(20.0),
-        child: Column(
-          children: [
-            Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text('My Commission'),
-                    Text(
-                      '\$12,761.65',
-                      style:
-                          TextStyle(fontWeight: FontWeight.bold, fontSize: 25),
-                    ),
-                    Row(
-                      children: [
-                        Text('+51,869'),
-                        Text(
-                          'Today\'s Profit',
-                          style: TextStyle(color: Colors.grey),
-                        ),
-                      ],
-                    )
-                  ],
-                ),
-                Container(
-                  height: 50.0,
-                  width: 1,
-                  color: Color.fromARGB(255, 181, 181, 181).withOpacity(0.3),
-                ),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      'My sharing code',
-                      style: TextStyle(
-                          color: Colors.grey, fontWeight: FontWeight.w500),
-                    ),
-                    SizedBox(
-                      height: 5,
-                    ),
-                    GestureDetector(
-                      onTap: () async {
-                      await Clipboard.setData(
-                              ClipboardData(text: json.decode(storage.getItem('userDetails'))[0]['myreferal']))
-                          .then((_) {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(content: Text(json.decode(storage.getItem('userDetails'))[0]['myreferal']+" copied to clipboard")));
-                      });
-                    },
-                      child: Container(
-                        padding: EdgeInsets.only(
-                            left: 10, right: 10, top: 10, bottom: 10),
-                        decoration: BoxDecoration(
-                            border: Border.all(color: tShado1Color),
-                            shape: BoxShape.rectangle,
-                            borderRadius: BorderRadius.circular(8),
-                            color: tShadoColor),
-                        child: Text(json.decode(storage.getItem('userDetails'))[0]['myreferal']),
+    return FutureBuilder<String?>(
+      future: _getMyDetails(),
+      builder: (BuildContext context, AsyncSnapshot<String?> snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return Center(child: CircularProgressIndicator());
+        } else if (snapshot.hasError) {
+          return Center(child: Text('Error: ${snapshot.error}'));
+        } else if (!snapshot.hasData || snapshot.data == null) {
+          return Center(child: Text('No data found'));
+        } else {
+          return Container(
+            margin: EdgeInsets.all(10),
+            decoration: BoxDecoration(
+                border: Border.all(color: tGrayColor),
+                borderRadius: BorderRadius.all(Radius.circular(10))),
+            child: Padding(
+              padding: const EdgeInsets.all(20.0),
+              child: Column(
+                children: [
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text('My Commission'),
+                          Text(
+                           jsonDecode('${snapshot.data}')["profit"].toString(),
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold, fontSize: 25),
+                          ),
+                          Row(
+                            children: [
+                              Text(jsonDecode('${snapshot.data}')["profit"].toString()),
+                              Text(
+                                'Today\'s Profit',
+                                style: TextStyle(color: Colors.grey),
+                              ),
+                            ],
+                          )
+                        ],
                       ),
-                    )
-                  ],
-                ),
-              ],
-            ),
-            SizedBox(
-              height: 25,
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                InkWell(
-                  onTap: () {},
-                  child: Container(
-                    padding: EdgeInsets.only(
-                        left: 15, right: 15, top: 10, bottom: 10),
-                    decoration: BoxDecoration(
-                        border: Border.all(color: Colors.amber),
-                        shape: BoxShape.rectangle,
-                        borderRadius: BorderRadius.circular(9),
-                        color: Colors.amber),
-                    child: Row(
-                      children: [
-                        SvgPicture.asset(
-                          withdrawSvg,
-                          height: 20,
-                          width: 20,
-                          color: Colors.white,
-                        ),
-                        SizedBox(
-                          width: 10,
-                        ),
-                        Text(
-                          'Transfer Out',
-                          style: TextStyle(
-                              color: Colors.white, fontWeight: FontWeight.w500),
-                        ),
-                      ],
-                    ),
+                      Container(
+                        height: 50.0,
+                        width: 1,
+                        color:
+                            Color.fromARGB(255, 181, 181, 181).withOpacity(0.3),
+                      ),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            'My sharing code',
+                            style: TextStyle(
+                                color: Colors.grey,
+                                fontWeight: FontWeight.w500),
+                          ),
+                          SizedBox(
+                            height: 5,
+                          ),
+                          GestureDetector(
+                            onTap: () async {
+                              await Clipboard.setData(
+                                      ClipboardData(text: jsonDecode('${snapshot.data}')["myReferral"]))
+                                  .then((_) {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                    SnackBar(
+                                        content: Text(jsonDecode('${snapshot.data}')["myReferral"] +
+                                            " copied to clipboard")));
+                              });
+                            },
+                            child: Container(
+                              padding: EdgeInsets.only(
+                                  left: 10, right: 10, top: 10, bottom: 10),
+                              decoration: BoxDecoration(
+                                  border: Border.all(color: tShado1Color),
+                                  shape: BoxShape.rectangle,
+                                  borderRadius: BorderRadius.circular(8),
+                                  color: tShadoColor),
+                              child: Text(jsonDecode('${snapshot.data}')["myReferral"]),
+                            ),
+                          )
+                        ],
+                      ),
+                    ],
                   ),
-                ),
-              ],
-            )
-          ],
-        ),
-      ),
+                  SizedBox(
+                    height: 25,
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      InkWell(
+                        onTap: () {},
+                        child: Container(
+                          padding: EdgeInsets.only(
+                              left: 15, right: 15, top: 10, bottom: 10),
+                          decoration: BoxDecoration(
+                              border: Border.all(color: Colors.amber),
+                              shape: BoxShape.rectangle,
+                              borderRadius: BorderRadius.circular(9),
+                              color: Colors.amber),
+                          child: Row(
+                            children: [
+                              SvgPicture.asset(
+                                withdrawSvg,
+                                height: 20,
+                                width: 20,
+                                color: Colors.white,
+                              ),
+                              SizedBox(
+                                width: 10,
+                              ),
+                              Text(
+                                'Transfer Out',
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.w500),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ],
+                  )
+                ],
+              ),
+            ),
+          );
+        }
+      },
     );
   }
 }
