@@ -13,6 +13,7 @@ import 'package:my_wealth/src/features/core/screens/mywealth_screen/widgets/tran
 import 'package:my_wealth/src/features/authentication/screens/signup/signup_scren.dart';
 import 'package:my_wealth/src/features/core/screens/Customer_Service/customer_service.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class MyWealthScreen extends StatelessWidget {
   const MyWealthScreen({super.key});
@@ -26,6 +27,7 @@ class MyWealthScreen extends StatelessWidget {
           body: CustomScrollView(
             slivers: <Widget>[
               SliverAppBar(
+                automaticallyImplyLeading: false,
                 expandedHeight: 50.0, // adjust the height as needed
                 floating: true,
                 flexibleSpace: FlexibleSpaceBar(
@@ -68,13 +70,14 @@ class MyWealthScreen extends StatelessWidget {
                         width: double.infinity,
                         height: 49,
                         child: OutlinedButton(
-                          onPressed: () {
+                          onPressed: () async {
+                            SharedPreferences prefs =
+                                await SharedPreferences.getInstance();
+                            await prefs.setBool('isLoggedIn', false);
                             Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (context) => SignupScreen()
-                                    )
-                                    );
+                                    builder: (context) => SignupScreen()));
                           },
                           style: ButtonStyle(
                             shape: MaterialStateProperty.all(

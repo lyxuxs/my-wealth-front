@@ -5,6 +5,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:my_wealth/src/constarits/colors.dart';
 import 'package:my_wealth/src/constarits/image_strings.dart';
 import 'dart:convert';
+import 'package:my_wealth/src/utils/storage.dart';
 import 'package:http/http.dart' as http;
 import 'package:my_wealth/src/constarits/server.dart';
 import 'package:intl/intl.dart';
@@ -26,66 +27,57 @@ class _TransferScreenState extends State<TransferScreen> {
   String selectedWalletText = '';
 
   Future<void> fetchTransList() async {
-    final response = await http.get(
-      Uri.parse(API_URL + '/trans'),
-      headers: <String, String>{
-        'Content-Type': 'application/json; charset=UTF-8',
-      },
-    );
-    final List<dynamic> data = jsonDecode(response.body);
-    transList.clear();
-
-    for (var item in data) {
-      final transData = {
-        'transID': item['transID'],
-        'spot': item['spot'],
-        'funding': item['funding'],
-        'commission': item['commission'],
-        'DateTime': item['DateTime'],
-        'cusID': item['cusID']
-      };
-      transList.add(transData);
-    }
-    walletList = Wallet(transList[0]['spot'], transList[0]['funding']);
+    walletList = Wallet(storage.getItem('userDetails')["spotBalance"],
+    storage.getItem('userDetails')["fundingBalance"]);
   }
 
   void _addTrans() async {
     String amount = amountController.text;
-    double newSpot;
-    double newFunding;
-    DateTime now = DateTime.now();
-    String formattedDate = DateFormat('yyyy-MM-dd HH:mm:ss').format(now);
+    final bodyData = <String, dynamic>{};
+    bodyData['amount'] = amount;
+    bodyData['userID'] = storage.getItem('userDetails')["userID"].toString();
+
     if (selectedWalletText == 'Spot Wallet') {
-      newSpot = selectedWalletValue - double.parse(amount);
-      newFunding = selectedWalletValue + double.parse(amount);
+      bodyData['From'] = 'spotBalance';
+      bodyData['to'] = 'fundingBalance';
     } else {
-      newFunding = selectedWalletValue - double.parse(amount);
-      newSpot = selectedWalletValue + double.parse(amount);
+      bodyData['From'] = 'fundingBalance';
+      bodyData['to'] = 'spotBalance';
     }
+
     try {
       final responce = await http.post(
-        Uri.parse(API_URL + '/addTrans'),
-        headers: <String, String>{
-          'Content-Type': 'application/json; charset=UTF-8',
-        },
-        body: jsonEncode({
-          'spot': newSpot,
-          'funding': newFunding,
-          'commission': transList[0]['commission'],
-          'DateTime': formattedDate,
-          'cusID': transList[0]['cusID']
-        }),
+        Uri.parse(API_URL + 'transfer'),
+        body: bodyData,
       );
-      print(responce);
+      var responseBody = json.decode(responce.body);
+
+      if (responseBody["message"] == 'Create Transfer') {
+        final userBodyData = <String, dynamic>{};
+        userBodyData['userID'] = storage.getItem('userDetails')["userID"];
+        final userRes = await http.get(
+          Uri.parse(API_URL +
+              'search_user_by_id?userID=' +
+              storage.getItem('userDetails')["userID"].toString()),
+        );
+        var userResBody = json.decode(userRes.body);
+        storage.setItem('userDetails', userResBody);
+        Navigator.pop(context);
+      } else {
+        setState(() {
+          errorMessage = responseBody["message"];
+        });
+      }
     } catch (e) {
-      print(e);
+      setState(() {
+        errorMessage = e.toString();
+      });
     }
   }
 
   @override
   void initState() {
     super.initState();
-    print("...................init");
     fetchTransList();
   }
 
@@ -388,4 +380,5 @@ class Wallet {
   Wallet(this.spotWalletValue, this.fundingWalletValue);
 }
 
-Wallet walletList = Wallet(100.0, 200.0);
+Wallet walletList = Wallet(storage.getItem('userDetails')["spotBalance"],
+    storage.getItem('userDetails')["fundingBalance"]);

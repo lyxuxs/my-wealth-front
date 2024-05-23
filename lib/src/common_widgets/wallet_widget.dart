@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:my_wealth/src/common_widgets/custom_container_btn.dart';
 import 'package:my_wealth/src/constarits/colors.dart';
 import 'package:my_wealth/src/constarits/image_strings.dart';
+import 'package:my_wealth/src/utils/storage.dart';
 import 'package:my_wealth/src/features/core/screens/deposit/deposit_screen.dart';
 import 'package:my_wealth/src/features/core/screens/history/historyscreen.dart';
 import 'package:my_wealth/src/features/core/screens/transfer/transfer_screen.dart';
@@ -31,13 +32,13 @@ class WalletWidget extends StatelessWidget {
                   children: [
                     Text('Protfolio Balance'),
                     Text(
-                      '\$12,761.65',
+                      '\$'+storage.getItem('userDetails')["spotBalance"].toString(),
                       style:
                           TextStyle(fontWeight: FontWeight.bold, fontSize: 25),
                     ),
                     Row(
                       children: [
-                        Text('+51,869'),
+                        Text('+'+storage.getItem('userDetails')["profit"].toString()),
                         Text(
                           'Today\'s Profit',
                           style: TextStyle(color: Colors.grey),
@@ -56,7 +57,7 @@ class WalletWidget extends StatelessWidget {
                   children: [
                     Text('Funding Balance', style: TextStyle(color: Colors.grey, fontWeight: FontWeight.w500),),
                     Text(
-                      '\$12,761.65',
+                      '\$'+storage.getItem('userDetails')["fundingBalance"].toString(),
                       style:
                           TextStyle(fontWeight: FontWeight.bold, fontSize: 25),
                     ),

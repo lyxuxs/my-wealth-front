@@ -8,6 +8,7 @@ import 'package:http/http.dart' as http;
 import 'package:my_wealth/src/utils/storage.dart';
 import 'dart:convert';
 import 'package:my_wealth/src/features/core/mainpage.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
@@ -19,6 +20,8 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> {
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
+  String errorMsg = '';
+
   // final AuthService authService = AuthService();
 
   // void loginUser() {
@@ -127,6 +130,10 @@ class _LoginScreenState extends State<LoginScreen> {
                 ],
               ),
               const SizedBox(height: 40),
+              Text(
+                errorMsg,
+                style: TextStyle(fontSize: 12, color: Colors.red),
+              ),
               SizedBox(
                 width: double.infinity,
                 height: 49,
@@ -144,7 +151,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         borderRadius: BorderRadius.circular(9),
                       ),
                     ),
-                    backgroundColor: MaterialStateProperty.all(buttonColor),
+                    backgroundColor: MaterialStateProperty.all(authBtnBgColor),
                     textStyle: MaterialStateProperty.all(
                       const TextStyle(color: Colors.white),
                     ),
@@ -178,29 +185,43 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   void _loginUser() async {
+    setState(() {
+      errorMsg = "";
+    });
     String email = emailController.text;
     String password = passwordController.text;
+
+    final bodyData = <String, dynamic>{};
+    bodyData['email'] = email;
+    bodyData['password'] = password;
+
     try {
-      final response = await http.post(
-        Uri.parse(API_URL + '/login'),
-        headers: <String, String>{
-          'Content-Type': 'application/json; charset=UTF-8',
-        },
-        body: jsonEncode({'email': email, 'password': password}),
-      );
+    
+      final responce =
+          await http.post(Uri.parse(API_URL + 'user_login'), body: bodyData);
+          
+      var responseBody = json.decode(responce.body);
+      
 
-      if (response.body != "No User Found") {
-        print(response.body);
-        //storage.setItem('userDetails', response.body);
-        final info = json.encode(response.body);
-        storage.setItem('userDetails', info);
-
-        Navigator.push(
+      if (responseBody["code"] == 200) {
+        
+        SharedPreferences prefs = await SharedPreferences.getInstance();
+        // SharedPreferences prefs =SharedPreferences.getInstance() as SharedPreferences;
+        prefs.setString('userDetails', responseBody.toString());
+        storage.setItem('userDetails', responseBody);
+        
+            await prefs.setBool('isLoggedIn', true);
+        Navigator.pushReplacement(
             context, MaterialPageRoute(builder: (context) => MainPage()));
+      } else {
+        setState(() {
+          errorMsg = responseBody["message"];
+        });
       }
     } catch (e) {
-      print(e);
+      setState(() {
+        errorMsg = e.toString();
+      });
     }
   }
 }
-
