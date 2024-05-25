@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:my_wealth/src/constarits/colors.dart';
 import 'package:my_wealth/src/constarits/image_strings.dart';
+import 'package:my_wealth/src/features/core/mainpage.dart';
 import 'dart:convert';
 import 'package:my_wealth/src/utils/storage.dart';
 import 'package:http/http.dart' as http;
@@ -85,8 +86,11 @@ class _TransferScreenState extends State<TransferScreen> {
 
         var userResBody = json.decode(userRes.body);
         storage.setItem('userDetails', userResBody);
-
-        Navigator.pop(context);
+        prefs.setString('userDetails', json.encode(userResBody));
+        Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => MainPage(initialIndex: 3)),
+                );
       } else {
         setState(() {
           errorMessage = responseBody["message"];

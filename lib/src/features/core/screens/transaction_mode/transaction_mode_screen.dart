@@ -1,8 +1,11 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:my_wealth/src/constarits/colors.dart';
 import 'package:my_wealth/src/constarits/image_strings.dart';
 import 'package:my_wealth/src/features/core/screens/transaction_mode/transaction_mode_details/recurring_trading.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class TradingModeScreen extends StatefulWidget {
   const TradingModeScreen({super.key});
@@ -39,26 +42,39 @@ class _TradingModeScreenState extends State<TradingModeScreen> {
           child: Column(
             children: [
               GestureDetector(
-                onTap: () {
-                  Navigator.push(
+                onTap: () async {
+                  SharedPreferences prefs =
+                      await SharedPreferences.getInstance();
+                  if (!jsonDecode(
+                      prefs.getString('userDetails').toString())["isVerify"]) {
+                    Navigator.push(
                         context,
                         MaterialPageRoute(
                             builder: (context) => RecurringTrading()));
+                  }
                 },
                 child: TradingModeWidget(
                   svgPath: transactionModeSvg,
                   isSwitchClickable: true,
                   title: 'Recurring Trading (RT)',
-                  subtitle: 'Set a schedule for Autonomous\nto trade on your behalf',
+                  subtitle:
+                      'Set a schedule for Autonomous\nto trade on your behalf',
                   switchValue: light0,
-                  onSwitchChanged: (bool value) {
-                    setState(() {
-                      light0 = value;
-                    });
+                  onSwitchChanged: (bool value) async {
+                    SharedPreferences prefs =
+                        await SharedPreferences.getInstance();
+                    if (jsonDecode(prefs.getString('userDetails').toString())[
+                        "isVerify"]) {
+                      setState(() {
+                        light0 = value;
+                      });
+                    }
                   },
                 ),
               ),
-              SizedBox(height: 10,),
+              SizedBox(
+                height: 10,
+              ),
               TradingModeWidget(
                 svgPath: poolIconSvg,
                 isSwitchClickable: false,
@@ -101,7 +117,7 @@ class TradingModeWidget extends StatefulWidget {
 }
 
 class _TradingModeWidgetState extends State<TradingModeWidget> {
-   final MaterialStateProperty<Icon?> thumbIcon =
+  final MaterialStateProperty<Icon?> thumbIcon =
       MaterialStateProperty.resolveWith<Icon?>(
     (Set<MaterialState> states) {
       if (states.contains(MaterialState.selected)) {
@@ -162,7 +178,8 @@ class _TradingModeWidgetState extends State<TradingModeWidget> {
               Switch(
                 thumbIcon: thumbIcon,
                 value: widget.switchValue,
-                onChanged: widget.isSwitchClickable ? widget.onSwitchChanged : null,
+                onChanged:
+                    widget.isSwitchClickable ? widget.onSwitchChanged : null,
               ),
             ],
           ),

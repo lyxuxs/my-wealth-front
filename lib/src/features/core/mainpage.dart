@@ -9,14 +9,20 @@ import 'package:my_wealth/src/features/core/screens/mywealth_screen/mywealth_scr
 import 'package:my_wealth/src/features/core/screens/trades/trades_screen.dart';
 
 class MainPage extends StatefulWidget {
-  const MainPage({super.key});
+  final int initialIndex;
+  const MainPage({Key? key, this.initialIndex = 0}) : super(key: key);
 
   @override
   State<MainPage> createState() => _MainPageState();
 }
 
 class _MainPageState extends State<MainPage> {
-  int index = 0;
+  late int index;
+   @override
+  void initState() {
+    super.initState();
+    index = widget.initialIndex; // Initialize the index with the passed parameter
+  }
   final screens = [
     MarketsScreen(),
     //ChartScreen(),
