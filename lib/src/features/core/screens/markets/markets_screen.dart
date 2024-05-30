@@ -80,7 +80,7 @@ class _MarketsScreenState extends State<MarketsScreen>
     super.initState();
     _tabController = TabController(length: 1, vsync: this);
     fetcCoins();
-    _timer=Timer.periodic(Duration(seconds: 20), (timer) {
+    _timer = Timer.periodic(Duration(seconds: 2), (timer) {
       fetcCoins();
     });
   }
@@ -201,19 +201,14 @@ class _MarketsScreenState extends State<MarketsScreen>
             ),
             backgroundColor: tLightBlueColor,
             elevation: 0,
-            title: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                new SvgPicture.asset(logowithtextSvg, width: 120),
-                Text(
-                  "Market",
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 15,
-                  ),
-                ),
-              ],
+            centerTitle: false,
+            title: const Text(
+              'Markets',
+              style: TextStyle(
+                fontSize: 20,
+                fontWeight: FontWeight.w500,
+                color: Colors.white,
+              ),
             ),
           ),
           body: TabBarView(
@@ -225,7 +220,6 @@ class _MarketsScreenState extends State<MarketsScreen>
                 itemBuilder: (context, index) {
                   return SingleChildScrollView(
                     child: cryptoCard(
-                      image: coinList[index].image,
                       symbol: coinList[index].symbol,
                       current_price: coinList[index].current_price,
                     ),

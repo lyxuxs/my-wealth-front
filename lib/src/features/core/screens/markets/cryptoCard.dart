@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
 
 class cryptoCard extends StatelessWidget {
-  String image;
   String symbol;
   double current_price;
 
   cryptoCard({
-    required this.image,
     required this.symbol,
     required this.current_price,
   });
@@ -36,15 +34,15 @@ class cryptoCard extends StatelessWidget {
         Container(
           padding: EdgeInsets.all(10),
           child: Row(
-            //mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
-              Image.asset(
-                image,
-                height: 20,
-                width: 20,
-                fit: BoxFit.cover,
-              ),
+              // Image.asset(
+              //   image,
+              //   height: 20,
+              //   width: 20,
+              //   fit: BoxFit.cover,
+              // ),
               Text(
                 symbol,
                 style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
