@@ -9,6 +9,8 @@ import 'package:my_wealth/src/constarits/sizes.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 import 'package:my_wealth/src/utils/storage.dart';
 import 'dart:convert';
+import 'package:http/http.dart' as http;
+import 'package:my_wealth/src/constarits/server.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class InviteFrinedsScreen extends StatefulWidget {
@@ -25,6 +27,7 @@ class _InviteFrinedsScreenState extends State<InviteFrinedsScreen> {
   @override
   void initState() {
     super.initState();
+    _fetchPackageData();
     displayEmail = email.length > 25 ? email.substring(0, 22) + '...' : email;
   }
 
@@ -33,6 +36,76 @@ class _InviteFrinedsScreenState extends State<InviteFrinedsScreen> {
     "Membership list",
     "Commission Records",
   ];
+  List<dynamic> packageList = [
+    {
+      'packageID': 1,
+      'packageName': 'Intro',
+      'personalMaxFund': 50,
+      'personalMinFund': 0,
+      'rebateFee': 10
+    },
+    {
+      'packageID': 2,
+      'packageName': 'Level 1',
+      'personalMaxFund': 199,
+      'personalMinFund': 51,
+      'rebateFee': 12
+    },
+    {
+      'packageID': 3,
+      'packageName': 'Level 2',
+      'personalMaxFund': 500,
+      'personalMinFund': 200,
+      'rebateFee': 15
+    },
+    {
+      'packageID': 4,
+      'packageName': 'Level 3',
+      'personalMaxFund': 999,
+      'personalMinFund': 501,
+      'rebateFee': 18
+    }
+  ];
+  Future<List?> _fetchPackageData() async {
+    try {
+      final responce = await http.get(
+        Uri.parse(API_URL + 'get_packages'),
+      );
+      var responseBody = json.decode(responce.body);
+      if (responseBody is List) {
+        packageList = responseBody;
+        setState(() {
+          packageList = responseBody;
+        });
+       
+        return packageList;
+      } else {
+        return null;
+      }
+    } catch (e) {
+      print(e);
+      return null;
+    }
+  }
+
+  /*ListView(
+      children: packageList.map((package) {
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(package['packageName'],
+                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+            SizedBox(height: 10),
+            Text("- Personal funds arrive ${package['personalMaxFund']}USD"),
+            Text("- Rebate fee: ${package['rebateFee']}% for Level"),
+            Text(
+                "- Monthly income is up to ${package['personalMaxFund'] * package['rebateFee'] / 100}  USD or more"),
+            SizedBox(height: 20),
+          ],
+        );
+      }).toList(),
+    ),
+    */
 
   List<Widget> screen = [
     SizedBox(
@@ -337,7 +410,7 @@ class _InviteFrinedsScreenState extends State<InviteFrinedsScreen> {
       appBar: AppBar(
         automaticallyImplyLeading: true,
         iconTheme: IconThemeData(
-          color: Colors.white, 
+          color: Colors.white,
         ),
         backgroundColor: tLightBlueColor,
         elevation: 0,
@@ -404,7 +477,159 @@ class _InviteFrinedsScreenState extends State<InviteFrinedsScreen> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisAlignment: MainAxisAlignment.start,
-                    children: [screen[current]],
+                    children: [
+                      if (current == 0)
+                        SizedBox(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              SizedBox(
+                                height: 500,
+                                child: Expanded(
+                                  child: ListView.builder(
+                                    itemCount: packageList.length,
+                                    scrollDirection: Axis.vertical,
+                                    itemBuilder: ((context, index) {
+                                     return Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text(packageList[index]['packageName'],
+                                          style: TextStyle(
+                                              fontSize: 18,
+                                              fontWeight: FontWeight.bold)),
+                                      SizedBox(height: 10),
+                                      Text(
+                                          "- Personal funds arrive ${packageList[index]['personalMinFund']}USD"),
+                                      Text(
+                                          "- Rebate fee: ${packageList[index]['rebateFee']}% for Level"),
+                                      Text(
+                                          "- Monthly income is up to ${packageList[index]['personalMaxFund'] * packageList[index]['rebateFee'] / 100}  USD or more"),
+                                      SizedBox(height: 20),
+                                    ],
+                                  );
+                                      /*SizedBox(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text("Intro"),
+                                    SizedBox(
+                                      height: 10,
+                                    ),
+                                    Text("- Personal funds arrive 50USD"),
+                                    Text("- Rebate fee: 10% for Level"),
+                                    Text(
+                                        "- Monthly income is up to 10 USD or more"),
+                                  ],
+                                ),
+                              ),
+                              SizedBox(
+                                height: 20,
+                              ),
+                              SizedBox(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text("Level 1 "),
+                                    SizedBox(
+                                      height: 10,
+                                    ),
+                                    Text("- Personal funds arrive 199USD"),
+                                    Text("- Rebate fee: 12% for Level"),
+                                    Text(
+                                        "- Monthly income is up to 50 USD or more"),
+                                  ],
+                                ),
+                              ),
+                              SizedBox(
+                                height: 20,
+                              ),
+                              SizedBox(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text("Level 2"),
+                                    SizedBox(
+                                      height: 10,
+                                    ),
+                                    Text("- Personal funds arrive 500USD"),
+                                    Text("- Rebate fee: 15% for Level"),
+                                    Text(
+                                        "- Monthly income is up to 200 USD or more"),
+                                  ],
+                                ),
+                              ),
+                              SizedBox(
+                                height: 20,
+                              ),
+                              SizedBox(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text("Level 3"),
+                                    SizedBox(
+                                      height: 10,
+                                    ),
+                                    Text("- Personal funds arrive 999USD"),
+                                    Text("- Rebate fee: 18% for Level"),
+                                    Text(
+                                        "- Monthly income is up to 600 USD or more"),
+                                  ],
+                                ),
+                              ),
+                              SizedBox(
+                                height: 20,
+                              ),
+                             */
+                                    }),
+                                  ),
+                                ),
+                              ),
+                              Text(
+                                '*Inviting friends activity prohibits users from recommending themselves. If the malicious commission is found, our company has the right to remove the users authority to use the function and the commission.',
+                                style: TextStyle(color: tredColor),
+                              ),
+                            ],
+                          ),
+                        )
+
+                      /* SizedBox(
+                          height: 500,
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Expanded(
+                                  child: ListView.builder(
+                                itemCount: packageList.length,
+                                scrollDirection: Axis.horizontal,
+                                itemBuilder: ((context, index) {
+                                  return Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text(packageList[index]['packageName'],
+                                          style: TextStyle(
+                                              fontSize: 18,
+                                              fontWeight: FontWeight.bold)),
+                                      SizedBox(height: 10),
+                                      Text(
+                                          "- Personal funds arrive ${packageList[index]['personalMaxFund']}USD"),
+                                      Text(
+                                          "- Rebate fee: ${packageList[index]['rebateFee']}% for Level"),
+                                      Text(
+                                          "- Monthly income is up to ${packageList[index]['personalMaxFund'] * packageList[index]['rebateFee'] / 100}  USD or more"),
+                                      SizedBox(height: 20),
+                                    ],
+                                  );
+                                }),
+                              )),
+                            ],
+                          ),
+                        )
+                     */
+                      else
+                        screen[current]
+                    ],
                   ),
                 )
               ],
@@ -456,13 +681,14 @@ class MyCommissionWidget extends StatelessWidget {
                         children: [
                           Text('My Commission'),
                           Text(
-                           jsonDecode('${snapshot.data}')["profit"].toString(),
+                            jsonDecode('${snapshot.data}')["profit"].toString(),
                             style: TextStyle(
                                 fontWeight: FontWeight.bold, fontSize: 25),
                           ),
                           Row(
                             children: [
-                              Text(jsonDecode('${snapshot.data}')["profit"].toString()),
+                              Text(jsonDecode('${snapshot.data}')["profit"]
+                                  .toString()),
                               Text(
                                 'Today\'s Profit',
                                 style: TextStyle(color: Colors.grey),
@@ -491,13 +717,16 @@ class MyCommissionWidget extends StatelessWidget {
                           ),
                           GestureDetector(
                             onTap: () async {
-                              await Clipboard.setData(
-                                      ClipboardData(text: jsonDecode('${snapshot.data}')["myReferral"]))
+                              await Clipboard.setData(ClipboardData(
+                                      text: jsonDecode(
+                                          '${snapshot.data}')["myReferral"]))
                                   .then((_) {
                                 ScaffoldMessenger.of(context).showSnackBar(
                                     SnackBar(
-                                        content: Text(jsonDecode('${snapshot.data}')["myReferral"] +
-                                            " copied to clipboard")));
+                                        content: Text(
+                                            jsonDecode('${snapshot.data}')[
+                                                    "myReferral"] +
+                                                " copied to clipboard")));
                               });
                             },
                             child: Container(
@@ -508,7 +737,8 @@ class MyCommissionWidget extends StatelessWidget {
                                   shape: BoxShape.rectangle,
                                   borderRadius: BorderRadius.circular(8),
                                   color: tShadoColor),
-                              child: Text(jsonDecode('${snapshot.data}')["myReferral"]),
+                              child: Text(
+                                  jsonDecode('${snapshot.data}')["myReferral"]),
                             ),
                           )
                         ],

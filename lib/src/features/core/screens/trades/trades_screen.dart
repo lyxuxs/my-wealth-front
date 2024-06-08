@@ -1,8 +1,13 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:my_wealth/src/common_widgets/trade_color_util.dart';
 import 'package:my_wealth/src/constarits/colors.dart';
 import 'dart:async';
 import 'dart:math';
+import 'package:http/http.dart' as http;
+import 'package:my_wealth/src/constarits/server.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class TradesScreen extends StatefulWidget {
   const TradesScreen({Key? key}) : super(key: key);
@@ -13,6 +18,12 @@ class TradesScreen extends StatefulWidget {
 
 class _TradesScreenState extends State<TradesScreen> {
   final String textValue = '-1.00';
+  late double balance;
+  late int margin;
+  late String package;
+  final Color color1 = Colors.red;
+  final Color color2 = Colors.blue;
+  late Color currentColor;
   List<dynamic> tradeList = [];
   late String _dateTimeString;
   late StreamController<double> _streamController;
@@ -23,20 +34,49 @@ class _TradesScreenState extends State<TradesScreen> {
     super.initState();
     _streamController = StreamController<double>();
     _startTimer();
+    currentColor = color1;
+    _getData();
+  }
+
+  void _getData() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    double spot = jsonDecode(
+        '${prefs.getString('userDetails').toString()}')["spotBalance"];
+    setState(() {
+      balance = spot;
+    });
+    try {
+      final bodyData = <String, dynamic>{};
+      bodyData['personalFund'] = spot.toString();
+
+      final responce = await http
+          .post(Uri.parse(API_URL + 'search_package_by_fund'), body: bodyData);
+
+      var responseBody = json.decode(responce.body);
+
+      setState(() {
+        margin = responseBody['personalMinFund'];
+      });
+    } catch (e) {
+      print(e);
+    }
   }
 
   void _startTimer() {
     _timer = Timer.periodic(Duration(seconds: 2), (timer) {
-      double randomDouble = Random().nextDouble() * 10;
+      Random random = Random();
+      double randomDouble = random.nextDouble();
+      double randomTen = randomDouble * 10;
+      bool shouldAdd = random.nextBool();
       _streamController.add(randomDouble);
 
       tradeList.clear();
-
+      double equity = shouldAdd
+          ? (balance + (randomDouble * 0.12))
+          : (balance - (randomDouble * 0.12));
       final tradeData = {
-        'balance': (randomDouble).toStringAsFixed(2),
-        'equity': (randomDouble + (randomDouble * 0.02)).toStringAsFixed(2),
-        'margin': (randomDouble - (randomDouble * 0.02)).toStringAsFixed(2),
-        'freeMargin': (randomDouble * 0.02).toStringAsFixed(2),
+        'equity': equity.toStringAsFixed(2),
+        'freeMargin': (equity-margin).toStringAsFixed(2),
         'marginLevel': 2,
         'amount': (Random().nextDouble() * 1000).toStringAsFixed(2),
         'tradeID': 1,
@@ -45,6 +85,7 @@ class _TradesScreenState extends State<TradesScreen> {
 
       setState(() {
         tradeList.add(tradeData);
+        currentColor = (random.nextInt(2) == 0) ? color1 : color2;
       });
     });
   }
@@ -79,26 +120,6 @@ class _TradesScreenState extends State<TradesScreen> {
             ? Text("No Trade Yet.")
             : Column(children: [
                 SizedBox(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.all(10),
-                        child: Text(
-                          'Positions',
-                          style: TextStyle(
-                              fontWeight: FontWeight.w600, fontSize: 15),
-                        ),
-                      ),
-                      Container(
-                        height: 1.0,
-                        color:
-                            Color.fromARGB(255, 181, 181, 181).withOpacity(0.1),
-                      )
-                    ],
-                  ),
-                ),
-                SizedBox(
                   //height: MediaQuery.of(context).size.height * 0.6,
                   child: StreamBuilder<double>(
                     stream: _streamController.stream,
@@ -106,8 +127,7 @@ class _TradesScreenState extends State<TradesScreen> {
                     builder: (context, snapshot) {
                       return ListView(
                         shrinkWrap: true,
-                        children: 
-                        tradeList.map((data) {
+                        children: tradeList.map((data) {
                           return Padding(
                               padding: const EdgeInsets.only(
                                   left: 10, right: 10, top: 10, bottom: 10),
@@ -120,7 +140,7 @@ class _TradesScreenState extends State<TradesScreen> {
                                           MainAxisAlignment.spaceBetween,
                                       children: [
                                         Text("Balance: "),
-                                        Text(data['balance'].toString()),
+                                        Text(balance.toString()),
                                       ],
                                     ),
                                     Row(
@@ -136,7 +156,7 @@ class _TradesScreenState extends State<TradesScreen> {
                                           MainAxisAlignment.spaceBetween,
                                       children: [
                                         Text("Margin: "),
-                                        Text(data['margin'].toString()),
+                                        Text(margin.toStringAsFixed(2)),
                                       ],
                                     ),
                                     Row(
@@ -147,18 +167,43 @@ class _TradesScreenState extends State<TradesScreen> {
                                         Text(data['freeMargin'].toString()),
                                       ],
                                     ),
-                                    Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        Text("Margin Level(%): "),
-                                        Text("2"),
-                                        // Text(data['marginLevel'].toString()),
-                                      ],
-                                    ),
+                                    // Row(
+                                    //   mainAxisAlignment:
+                                    //       MainAxisAlignment.spaceBetween,
+                                    //   children: [
+                                    //     Text("Margin Level(%): "),
+                                    //     Text("2"),
+                                    //     // Text(data['marginLevel'].toString()),
+                                    //   ],
+                                    // ),
                                     Container(
                                       child: Column(
                                         children: [
+                                          SizedBox(
+                                            child: Column(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: [
+                                                Padding(
+                                                  padding:
+                                                      const EdgeInsets.all(10),
+                                                  child: Text(
+                                                    'Positions',
+                                                    style: TextStyle(
+                                                        fontWeight:
+                                                            FontWeight.w600,
+                                                        fontSize: 15),
+                                                  ),
+                                                ),
+                                                Container(
+                                                  height: 1.0,
+                                                  color: Color.fromARGB(
+                                                          255, 181, 181, 181)
+                                                      .withOpacity(0.1),
+                                                )
+                                              ],
+                                            ),
+                                          ),
                                           Padding(
                                             padding: const EdgeInsets.only(
                                                 left: 10,
@@ -177,27 +222,28 @@ class _TradesScreenState extends State<TradesScreen> {
                                                         CrossAxisAlignment
                                                             .start,
                                                     children: [
-                                                      Text(
-                                                        "Trade ID - " +
-                                                            data['tradeID']
-                                                                .toString(),
-                                                        style: TextStyle(
-                                                            fontWeight:
-                                                                FontWeight.w600,
-                                                            fontSize: 15),
-                                                      ),
                                                       Row(
                                                         children: [
-                                                          const Text(
-                                                            "buy",
+                                                          Text(
+                                                            "Trade ID - #" +
+                                                                data['tradeID']
+                                                                    .toString(),
                                                             style: TextStyle(
-                                                                color:
-                                                                    tLightBlueColor,
                                                                 fontWeight:
                                                                     FontWeight
                                                                         .w600,
                                                                 fontSize: 15),
                                                           ),
+                                                          // const Text(
+                                                          //   "buy",
+                                                          //   style: TextStyle(
+                                                          //       color:
+                                                          //           tLightBlueColor,
+                                                          //       fontWeight:
+                                                          //           FontWeight
+                                                          //               .w600,
+                                                          //       fontSize: 15),
+                                                          // ),
                                                           SizedBox(
                                                             width: 5,
                                                           ),
@@ -214,8 +260,8 @@ class _TradesScreenState extends State<TradesScreen> {
                                                             data['amount']
                                                                 .toString(),
                                                             style: TextStyle(
-                                                                color:
-                                                                    tLightBlueColor,
+                                                                // color:
+                                                                //     tLightBlueColor,
                                                                 fontWeight:
                                                                     FontWeight
                                                                         .w600,
@@ -233,9 +279,10 @@ class _TradesScreenState extends State<TradesScreen> {
                                                       data['profit'].toString(),
                                                       style: TextStyle(
                                                         fontSize: 15,
-                                                        color: TextColorUtil
-                                                            .calculateTextColor(
-                                                                textValue),
+                                                        color: currentColor,
+                                                        // color: TextColorUtil
+                                                        //     .calculateTextColor(
+                                                        //         textValue),
                                                         fontWeight:
                                                             FontWeight.w600,
                                                       ),

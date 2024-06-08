@@ -400,7 +400,6 @@ class Step2Widget extends StatelessWidget {
       Navigator.push(
           context, MaterialPageRoute(builder: (context) => LoginScreen()));
     } catch (e) {
-      print("eeeeeeeeeeeeeeeeeeee");
       print(e);
     }
   }
