@@ -1,11 +1,16 @@
+import 'dart:ui';
+
 import 'package:auto_size_text/auto_size_text.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:my_wealth/src/common_widgets/custom_container_btn.dart';
 import 'package:my_wealth/src/constarits/colors.dart';
 import 'package:my_wealth/src/constarits/image_strings.dart';
 import 'package:my_wealth/src/constarits/sizes.dart';
+import 'package:my_wealth/src/features/core/screens/transaction/transaction_confirmationScreen.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 import 'package:my_wealth/src/utils/storage.dart';
 import 'dart:convert';
@@ -77,7 +82,7 @@ class _InviteFrinedsScreenState extends State<InviteFrinedsScreen> {
         setState(() {
           packageList = responseBody;
         });
-       
+
         return packageList;
       } else {
         return null;
@@ -479,18 +484,15 @@ class _InviteFrinedsScreenState extends State<InviteFrinedsScreen> {
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
                       if (current == 0)
-                        SizedBox(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              SizedBox(
-                                height: 500,
-                                child: Expanded(
-                                  child: ListView.builder(
-                                    itemCount: packageList.length,
-                                    scrollDirection: Axis.vertical,
-                                    itemBuilder: ((context, index) {
-                                     return Column(
+                        Column(
+                          children: [
+                            SizedBox(
+                              height: 500,
+                              child: ListView.builder(
+                                itemCount: packageList.length,
+                                scrollDirection: Axis.vertical,
+                                itemBuilder: ((context, index) {
+                                  return Column(
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
                                     children: [
@@ -508,125 +510,15 @@ class _InviteFrinedsScreenState extends State<InviteFrinedsScreen> {
                                       SizedBox(height: 20),
                                     ],
                                   );
-                                      /*SizedBox(
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text("Intro"),
-                                    SizedBox(
-                                      height: 10,
-                                    ),
-                                    Text("- Personal funds arrive 50USD"),
-                                    Text("- Rebate fee: 10% for Level"),
-                                    Text(
-                                        "- Monthly income is up to 10 USD or more"),
-                                  ],
-                                ),
-                              ),
-                              SizedBox(
-                                height: 20,
-                              ),
-                              SizedBox(
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text("Level 1 "),
-                                    SizedBox(
-                                      height: 10,
-                                    ),
-                                    Text("- Personal funds arrive 199USD"),
-                                    Text("- Rebate fee: 12% for Level"),
-                                    Text(
-                                        "- Monthly income is up to 50 USD or more"),
-                                  ],
-                                ),
-                              ),
-                              SizedBox(
-                                height: 20,
-                              ),
-                              SizedBox(
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text("Level 2"),
-                                    SizedBox(
-                                      height: 10,
-                                    ),
-                                    Text("- Personal funds arrive 500USD"),
-                                    Text("- Rebate fee: 15% for Level"),
-                                    Text(
-                                        "- Monthly income is up to 200 USD or more"),
-                                  ],
-                                ),
-                              ),
-                              SizedBox(
-                                height: 20,
-                              ),
-                              SizedBox(
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text("Level 3"),
-                                    SizedBox(
-                                      height: 10,
-                                    ),
-                                    Text("- Personal funds arrive 999USD"),
-                                    Text("- Rebate fee: 18% for Level"),
-                                    Text(
-                                        "- Monthly income is up to 600 USD or more"),
-                                  ],
-                                ),
-                              ),
-                              SizedBox(
-                                height: 20,
-                              ),
-                             */
-                                    }),
-                                  ),
-                                ),
-                              ),
-                              Text(
-                                '*Inviting friends activity prohibits users from recommending themselves. If the malicious commission is found, our company has the right to remove the users authority to use the function and the commission.',
-                                style: TextStyle(color: tredColor),
-                              ),
-                            ],
-                          ),
-                        )
-
-                      /* SizedBox(
-                          height: 500,
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Expanded(
-                                  child: ListView.builder(
-                                itemCount: packageList.length,
-                                scrollDirection: Axis.horizontal,
-                                itemBuilder: ((context, index) {
-                                  return Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Text(packageList[index]['packageName'],
-                                          style: TextStyle(
-                                              fontSize: 18,
-                                              fontWeight: FontWeight.bold)),
-                                      SizedBox(height: 10),
-                                      Text(
-                                          "- Personal funds arrive ${packageList[index]['personalMaxFund']}USD"),
-                                      Text(
-                                          "- Rebate fee: ${packageList[index]['rebateFee']}% for Level"),
-                                      Text(
-                                          "- Monthly income is up to ${packageList[index]['personalMaxFund'] * packageList[index]['rebateFee'] / 100}  USD or more"),
-                                      SizedBox(height: 20),
-                                    ],
-                                  );
                                 }),
-                              )),
-                            ],
-                          ),
+                              ),
+                            ),
+                            Text(
+                              '*Inviting friends activity prohibits users from recommending themselves. If the malicious commission is found, our company has the right to remove the users authority to use the function and the commission.',
+                              style: TextStyle(color: tredColor),
+                            )
+                          ],
                         )
-                     */
                       else
                         screen[current]
                     ],
@@ -752,7 +644,14 @@ class MyCommissionWidget extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       InkWell(
-                        onTap: () {},
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) =>
+                                    TransactionConfirationScreen()),
+                          );
+                        },
                         child: Container(
                           padding: EdgeInsets.only(
                               left: 15, right: 15, top: 10, bottom: 10),

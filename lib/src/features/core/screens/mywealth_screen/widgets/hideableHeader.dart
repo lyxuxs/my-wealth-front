@@ -13,6 +13,7 @@ class HideableHeader extends StatelessWidget {
     super.key,
   });
 
+
   Future<String?> _getMyDetails() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.getString('userDetails').toString();

@@ -32,10 +32,14 @@ const String copyIconSvg = "assets/images/Icons/copy-icon.svg";
 const String qrscannerIconSvg = "assets/images/Icons/scan-qr-code-4.svg";
 const String poolIconSvg = "assets/images/Icons/mywealth-pool-icon.svg";
 const String youtubeiconSvg = "assets/images/Icons/YouTube-icon.svg";
+const String infoiconSvg = "assets/images/Icons/info-icon.svg";
 
 
 //- Chart
 const String chartSvg = "assets/images/chart/chart-svg.svg";
+
+//- Animation
+const String successAnimation = "assets/images/animation/YHt4oOmVKK.json";
 
 
 //- Coin Icons
