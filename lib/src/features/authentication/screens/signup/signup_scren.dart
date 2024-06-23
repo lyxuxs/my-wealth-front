@@ -510,7 +510,7 @@ class _Step2WidgetState extends State<Step2Widget> {
       if (responseBody["code"] == 200) {
         storage.setItem('userDetails', responseBody);
         Navigator.pushReplacement(
-            context, MaterialPageRoute(builder: (context) => MainPage()));
+            context, MaterialPageRoute(builder: (context) => LoginScreen()));
       } else {
         setState(() {
           errorMsg = responseBody["message"];
