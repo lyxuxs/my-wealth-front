@@ -11,6 +11,7 @@ import 'package:my_wealth/src/features/core/screens/mywealth_screen/widgets/lear
 import 'package:my_wealth/src/features/core/screens/mywealth_screen/widgets/rafrral_n_customerservicewidget.dart';
 import 'package:my_wealth/src/features/core/screens/mywealth_screen/widgets/transactionmodewidget.dart';
 import 'package:my_wealth/src/features/authentication/screens/signup/signup_scren.dart';
+import 'package:my_wealth/src/features/authentication/screens/welcome/welcome_screen.dart';
 import 'package:my_wealth/src/features/core/screens/Customer_Service/customer_service.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -74,10 +75,10 @@ class MyWealthScreen extends StatelessWidget {
                             SharedPreferences prefs =
                                 await SharedPreferences.getInstance();
                             await prefs.setBool('isLoggedIn', false);
-                            Navigator.push(
+                            Navigator.pushReplacement(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (context) => SignupScreen()));
+                                    builder: (context) => WelcomeScreen()));
                           },
                           style: ButtonStyle(
                             shape: MaterialStateProperty.all(
