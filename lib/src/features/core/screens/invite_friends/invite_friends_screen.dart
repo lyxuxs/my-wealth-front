@@ -28,11 +28,16 @@ class InviteFrinedsScreen extends StatefulWidget {
 class _InviteFrinedsScreenState extends State<InviteFrinedsScreen> {
   late String email = "example@email.com";
   late String displayEmail;
+  late int introLevelMemberCount;
+  late int level1MemberCount;
+  late int level2MemberCount;
+  late int level3MemberCount;
 
   @override
   void initState() {
     super.initState();
     _fetchPackageData();
+    _fetchMemberData();
     displayEmail = email.length > 25 ? email.substring(0, 22) + '...' : email;
   }
 
@@ -71,6 +76,7 @@ class _InviteFrinedsScreenState extends State<InviteFrinedsScreen> {
       'rebateFee': 18
     }
   ];
+  List<dynamic> memberList = [];
   Future<List?> _fetchPackageData() async {
     try {
       final responce = await http.get(
@@ -87,6 +93,96 @@ class _InviteFrinedsScreenState extends State<InviteFrinedsScreen> {
       } else {
         return null;
       }
+    } catch (e) {
+      print(e);
+      return null;
+    }
+  }
+
+  Future<List?> _fetchMemberData() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    print("111111111111111111111111111111");
+    print("111111111111111111111111111111");
+    print("111111111111111111111111111111");
+    try {
+      final levelCResponce = await http.get(Uri.parse(API_URL +
+          'friendLevelC?friendUserID=' +
+          jsonDecode(prefs.getString('userDetails').toString())["userID"]
+              .toString()));
+
+      var responseBody = json.decode(levelCResponce.body);
+      print(responseBody);
+      for (var member in responseBody) {
+        print("222222222222222222222222222222222222222");
+        print("222222222222222222222222222222222222222");
+        print("222222222222222222222222222222222222222");
+        print(member['userID']);
+
+        final memberDetails = await http.get(Uri.parse(API_URL +
+            'search_user_by_id?userID=' +
+            member['userID'].toString()));
+        final memberDetailsRes = json.decode(memberDetails.body);
+        print("222222222222222222222222222222222222222");
+        print("222222222222222222222222222222222222222");
+        print("222222222222222222222222222222222222222");
+        print(memberDetailsRes);
+        var tempMember = {
+          'refTreeID': member['refTreeID'],
+          'userID': member['userID'],
+          'friendUserID': member['friendUserID'],
+          'isFriendAdmin': member['isFriendAdmin'],
+          'packageID': memberDetailsRes['packageID'],
+          'email': memberDetailsRes['email'],
+          'profit': memberDetailsRes['profit'],
+        };
+        memberList.add(tempMember);
+      }
+      introLevelMemberCount = 0;
+      level1MemberCount = 0;
+      level2MemberCount = 0;
+      level3MemberCount = 0;
+      for (var memberData in memberList) {
+        print("222222222222222222222222222222222222222");
+        print("222222222222222222222222222222222222222");
+        print("222222222222222222222222222222222222222");
+        print(memberData['packageID']);
+        if (memberData['packageID'] == 1) {
+          print("333333333333333333333333333333333333333");
+          setState(() {
+            introLevelMemberCount = introLevelMemberCount + 1;
+            print(introLevelMemberCount);
+          });
+        } else if (memberData['packageID'] == 2) {
+          setState(() {
+            level1MemberCount = level1MemberCount + 1;
+            print(level1MemberCount);
+          });
+          
+        } else if (memberData['packageID'] == 3) {
+          setState(() {
+            level2MemberCount = level2MemberCount + 1;
+            print(level2MemberCount);
+          });
+        } else if (memberData['packageID'] == 4) {
+          setState(() {
+            level3MemberCount = level3MemberCount + 1;
+            print(level3MemberCount);
+          });
+        }
+      }
+
+      if (mounted) {
+        setState(() {
+          memberList = memberList;
+          introLevelMemberCount = introLevelMemberCount;
+          level1MemberCount = level1MemberCount;
+          level2MemberCount = level2MemberCount;
+          level3MemberCount = level3MemberCount;
+        });
+      }
+
+      print(memberList);
+      return memberList;
     } catch (e) {
       print(e);
       return null;
@@ -214,7 +310,7 @@ class _InviteFrinedsScreenState extends State<InviteFrinedsScreen> {
                           width: 10,
                         ),
                         Text(
-                          "0",
+                         "0",
                           style: TextStyle(
                               fontWeight: FontWeight.bold,
                               color: tDarkGrayColor),
@@ -518,6 +614,167 @@ class _InviteFrinedsScreenState extends State<InviteFrinedsScreen> {
                               style: TextStyle(color: tredColor),
                             )
                           ],
+                        )
+                      else if (current == 1)
+                        SizedBox(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              SizedBox(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Column(
+                                      children: [
+                                        Row(
+                                          children: [
+                                            Text(
+                                              "Intro Level Members:",
+                                              style: TextStyle(
+                                                  fontWeight: FontWeight.bold,
+                                                  color: tDarkGrayColor),
+                                            ),
+                                            SizedBox(
+                                              width: 10,
+                                            ),
+                                            Text(
+                                              introLevelMemberCount.toString(),
+                                              style: TextStyle(
+                                                  fontWeight: FontWeight.bold,
+                                                  color: tDarkGrayColor),
+                                            ),
+                                          ],
+                                        ),
+                                        Row(
+                                          children: [
+                                            Text(
+                                              "Level 1 Members:",
+                                              style: TextStyle(
+                                                  fontWeight: FontWeight.bold,
+                                                  color: tDarkGrayColor),
+                                            ),
+                                            SizedBox(
+                                              width: 10,
+                                            ),
+                                            Text(
+                                              level1MemberCount.toString(),
+                                              style: TextStyle(
+                                                  fontWeight: FontWeight.bold,
+                                                  color: tDarkGrayColor),
+                                            ),
+                                          ],
+                                        ),
+                                        Row(
+                                          children: [
+                                            Text(
+                                              "Level 2 Members:",
+                                              style: TextStyle(
+                                                  fontWeight: FontWeight.bold,
+                                                  color: tDarkGrayColor),
+                                            ),
+                                            SizedBox(
+                                              width: 10,
+                                            ),
+                                            Text(
+                                              level2MemberCount.toString(),
+                                              style: TextStyle(
+                                                  fontWeight: FontWeight.bold,
+                                                  color: tDarkGrayColor),
+                                            ),
+                                          ],
+                                        ),
+                                        Row(
+                                          children: [
+                                            Text(
+                                              "Level 3 Members:",
+                                              style: TextStyle(
+                                                  fontWeight: FontWeight.bold,
+                                                  color: tDarkGrayColor),
+                                            ),
+                                            SizedBox(
+                                              width: 10,
+                                            ),
+                                            Text(
+                                              level3MemberCount.toString(),
+                                              style: TextStyle(
+                                                  fontWeight: FontWeight.bold,
+                                                  color: tDarkGrayColor),
+                                            ),
+                                          ],
+                                        ),
+                                      ],
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              SizedBox(
+                                height: 20,
+                              ),
+                              SizedBox(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    SizedBox(
+                                      width: 30,
+                                    ),
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Text(
+                                          "Account",
+                                          style: TextStyle(
+                                              fontWeight: FontWeight.bold),
+                                        ),
+                                        SizedBox(
+                                          width: 10,
+                                        ),
+                                        Text(
+                                          "Profit",
+                                          style: TextStyle(
+                                              fontWeight: FontWeight.bold),
+                                        ),
+                                      ],
+                                    )
+                                  ],
+                                ),
+                              ),
+                              SizedBox(
+                                height: 10,
+                              ),
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Text('displayEmail'),
+                                      SizedBox(
+                                        width: 10,
+                                      ),
+                                      Text(
+                                        "100",
+                                      ),
+                                    ],
+                                  ),
+                                  Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Text('displayEmail'),
+                                      SizedBox(
+                                        width: 10,
+                                      ),
+                                      Text(
+                                        "100",
+                                      ),
+                                    ],
+                                  ),
+                                ],
+                              )
+                            ],
+                          ),
                         )
                       else
                         screen[current]
